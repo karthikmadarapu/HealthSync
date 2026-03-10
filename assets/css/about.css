@@ -34,14 +34,29 @@ a {
     align-items: center;
 }
 
+.logo{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .logo a {
     color: #fff;
     font-size: 1.8rem;
     font-weight: 700;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.5px;
 }
 
 .logo span {
-    color: #6FCC00;
+    color: #CCFF00;
+    text-decoration: none;
+}
+
+.logo img{
+    display: block;
 }
 
 .nav-links {
@@ -60,7 +75,7 @@ a {
 
 .nav-links a:hover,
 .nav-links a.active {
-    color: #6FCC00;
+    color: #CCFF00;
 }
 
 .nav-links a::after {
@@ -70,7 +85,7 @@ a {
     height: 2px;
     bottom: 0;
     left: 0;
-    background-color: #6FCC00;
+    background-color: #CCFF00;
     transition: width 0.3s;
 }
 
@@ -80,7 +95,7 @@ a {
 }
 
 .nav-button {
-    background-color: #6FCC00;
+    background-color: #CCFF00;
     color: #000 !important;
     padding: 0.5rem 1.5rem !important;
     border-radius: 50px;
@@ -89,7 +104,7 @@ a {
 }
 
 .nav-button:hover {
-    background-color: #5cb300;
+    background-color: #CCFF00;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
@@ -101,7 +116,11 @@ a {
 
 .about-section {
     padding: 5rem 5%;
-    background-color: #000;
+    background: linear-gradient(rgba(11, 11, 11, 0.827), rgba(11, 11, 11, 0.734)), 
+    url(../images/About.jpg);
+     background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 .about-container {
@@ -116,7 +135,7 @@ a {
 
 #section-title h2{
     font-size: medium;
-    color: #6FCC00;
+    color: #CCFF00;
     margin-bottom: 1.5rem;
     line-height: 1.3;
 }
@@ -132,12 +151,12 @@ a {
 }
 
 .about-title span {
-    color: #6FCC00;
+    color: #CCFF00;
 }
 
 .about-content h3 {
     font-size: 1.5rem;
-    color: #6FCC00;
+    color: #CCFF00;
     margin-bottom: 1.5rem;
     font-weight: 500;
 }
@@ -173,13 +192,13 @@ a {
 }
 
 .about-feature-item h4 {
-    color: #2d3748;
+    color: #CCFF00;
     margin-bottom: 0.5rem;
     font-size: 1.1rem;
 }
 
 .about-feature-item p {
-    color: #718096;
+    color: #CCFF00;
     margin: 0;
     line-height: 1.6;
     font-size: 0.95rem;
@@ -205,14 +224,14 @@ a {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
-    background: #6FCC00;
+    background: #CCFF00;
     padding: 3rem;
     border-radius: 20px;
     box-shadow: 0 20px 50px rgba(72, 187, 120, 0.3);
 }
 
 .stat-box {
-    background: #6FCC00;
+    background: #CCFF00;
     padding: 2rem;
     border-radius: 15px;
     text-align: center;
@@ -295,7 +314,7 @@ a {
     font-weight: bold;
     cursor: pointer;
     z-index: 1002;
-    background: #6FCC00;
+    background: #ffffff;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -315,8 +334,8 @@ a {
 }
 
 .read-more-btn{
-    background-color: #6FCC00;
-    color: #fff;
+    background-color: #CCFF00;
+    color: #000000;
     padding: 10px 20px;
     border-radius: 20px;
 }
@@ -327,8 +346,8 @@ a {
 }
 
 .close{
-    background-color: #6FCC00;
-    color: #fff;
+    background-color: #fff;
+    color: #000;
     padding: 10px 20px;
     border-radius: 20px;
 }
@@ -353,4 +372,68 @@ a {
         order: -1;
         margin-bottom: 30px;
     }
+}
+
+/* Footer */
+footer {
+    background: #000;
+    color: white;
+    padding: 3rem 5% 2rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto 2rem;
+}
+
+.footer-section h4 {
+    margin-bottom: 1rem;
+    color: #CCFF00;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section ul li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-section a {
+    color: #cbd5e0;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-section a:hover {
+    color: #CCFF00;
+}
+
+.footer-section p {
+    color: #cbd5e0;
+    line-height: 1.7;
+    margin-bottom: 0.5rem;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid #2d3748;
+    color: #cbd5e0;
+}
+
+.footer-bottom p {
+    margin-bottom: 0.5rem;
 }
