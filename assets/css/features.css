@@ -1,0 +1,459 @@
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #000;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+}
+
+/* Navigation */
+.main-nav {
+    background-color: #000;
+    padding: 1rem 5%;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-right: 100px; /* Add space between logo and nav links */
+}
+
+.logo a {
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.5px;
+}
+
+.logo span {
+    color: #CCFF00;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+.logo img {
+    display: block;
+    width: 40px;
+    height: 40px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+}
+
+.nav-links a {
+    color: #fff;
+    font-weight: 500;
+    transition: color 0.3s;
+    padding: 0.5rem 0;
+    position: relative;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: #CCFF00;
+}
+
+.nav-links a {
+    text-decoration: none;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #CCFF00;
+    transition: width 0.3s;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+.nav-links a.active {
+    text-decoration: none;
+}
+
+.nav-links a.active::after {
+    width: 100%;
+}
+
+.nav-button {
+    background-color: #CCFF00;
+    color: #000 !important;
+    padding: 0.5rem 1.5rem !important;
+    border-radius: 50px;
+    font-weight: 600 !important;
+    transition: all 0.3s;
+}
+
+.nav-button:hover {
+    background-color: #c6f594;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Buttons */
+.btn {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary {
+    background: #CCFF00;
+    color: #000000;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(204, 255, 0, 0.3);
+}
+
+/* Section Headers */
+.section-header {
+    text-align: center;
+    padding: 128px 0 64px;
+    background-color: #000;
+}
+
+.section-header h1 {
+    font-size: 2.8rem;
+    color: #CCFF00;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0.5px;
+}
+
+.section-subtitle {
+    color: #aaa;
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    text-align: center;
+    line-height: 1.6;
+    
+}
+
+.features, .meal-plans, .workouts {
+    padding: 2rem 5% 6rem;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature-card {
+    background: #1a1a1a;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    border: 1px solid #333;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(204, 255, 0, 0.1);
+    border-color: #CCFF00;
+}
+
+.feature-icon {
+    margin-bottom: 1.5rem;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(204, 255, 0, 0.1);
+    border-radius: 50%;
+    font-size: 2.5rem;
+    color: #CCFF00;
+}
+
+.feature-image {
+    width: 100%;
+    height: 200px;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.feature-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover .feature-image img {
+    transform: scale(1.05);
+}
+
+.feature-card h3 {
+    color: #CCFF00;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.feature-card p {
+    color: #ccc;
+    line-height: 1.6;
+    margin: 0;
+    margin-bottom: 1.5rem;
+}
+
+.feature-button {
+    background-color: #CCFF00;
+    color: #000000;
+    padding: 12px 24px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: auto;
+}
+
+.feature-button:hover {
+    background: transparent;
+    color: #CCFF00;
+    border: 2px solid #CCFF00;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Hero Section for Meal Plans */
+.hero-features {
+    padding: 8rem 5% 4rem;
+    background: linear-gradient(135deg, rgba(111,204,0,0.5) 0%, rgba(111,204,0,0.5) 100%), url('../assets/images/Features/MealPlans.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+    text-align: center;
+}
+
+.hero-features h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    color: white;
+    font-weight: 700;
+}
+
+.hero-features p {
+    font-size: 1.3rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Meal Plan Cards */
+.meal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.meal-card {
+    background-color: #181818;
+    color: white;
+    padding: 30px;
+    
+}
+
+.meal-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(204, 255, 0, 0.1);
+    border-color: #CCFF00;
+}
+
+.meal-card h4 {
+    color: #CCFF00;
+    font-size: 22px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #CCFF00;
+    padding-bottom: 10px;
+}
+
+.meal-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.meal-card li {
+    padding: 8px 0;
+    padding-left: 20px;
+    position: relative;
+}
+
+.meal-card li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: #CCFF00;
+    font-weight: bold;
+}
+
+/* Specific Section Styling */
+.meal-plans {
+    padding: 5rem 0;
+    background-color: #000;
+}
+
+.workouts {
+    padding: 5rem 5rem;
+    background-color: #000000;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .nav-links {
+        display: none; /* Mobile menu would go here */
+    }
+    
+    .section-header h1 {
+        font-size: 2rem;
+    }
+}
+
+/* Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.feature-card {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+}
+
+.feature-card:nth-child(1) { animation-delay: 0.1s; }
+.feature-card:nth-child(2) { animation-delay: 0.2s; }
+.feature-card:nth-child(3) { animation-delay: 0.3s; }
+
+/* Footer */
+footer {
+    background: #000;
+    color: white;
+    padding: 3rem 5% 2rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto 2rem;
+}
+
+.footer-section h4 {
+    margin-bottom: 1rem;
+    color: #CCFF00;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section ul li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-section a {
+    color: #cbd5e0;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-section a:hover {
+    color: #CCFF00;
+}
+
+.footer-section p {
+    color: #cbd5e0;
+    line-height: 1.7;
+    margin-bottom: 0.5rem;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid #2d3748;
+    color: #cbd5e0;
+}
+
+.footer-bottom p {
+    margin-bottom: 0.5rem;
+}
