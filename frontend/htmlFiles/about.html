@@ -1,0 +1,169 @@
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthSync - About Us</title>
+    <link rel="stylesheet" href="assets/css/about.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="assets/images/sync.png" alt="HealthSync logo-icon"
+                width="30" height="30">
+                <a href="index.html">Health<span>Sync</span></a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="features.html">Features</a></li>
+                <li><a href="benefits.html">Benefits</a></li>
+                <li><a href="#calculator" class="nav-button">Try Now</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="about-main">
+        <section class="about-section">
+            <div class="about-container">
+                <div class="about-image">
+                    <img src="assets/images/aboutUsImg.jpg"alt="Fitness Training">
+                </div>
+                <div class="about-content">
+                    <h1 class="about-title">ABOUT <span>HEALTHSYNC</span></h1>
+                    <h3>Your Personal Health & Fitness Companion</h3>
+                    <div class="about-text">
+                        <p>HealthSync is a web-based health and fitness planning system 
+                            designed specifically for college students and young adults aged 18–30. 
+                            We understand that managing your health while juggling classes, work, 
+                            and social life can be overwhelming.</p>
+                        <p>Our mission is simple: make personalized fitness and nutrition planning accessible to everyone, 
+                            without expensive subscriptions, complicated equipment, or confusing advice.</p>
+                    </div>
+                    <a href="#" class="read-more-btn" id="readMoreBtn">Read More</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal -->
+    <div id="statsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Our Features</h2>
+            <div class="modal-stats-container">
+                <div class="stat-box">
+                    <h3>Core Calculations</h3>
+                    <p>BMI, BMR, TDEE</p>
+                </div>
+                <div class="stat-box">
+                    <h3>100%</h3>
+                    <p>Free Access</p>
+                    <span>No hidden costs</span>
+                </div>
+                <div class="stat-box">
+                    <h3>3</h3>
+                    <p>Fitness Goals</p>
+                    <span>Lose, Maintain, Gain</span>
+                </div>
+                <div class="stat-box">
+                    <h3>24/7</h3>
+                    <p>Availability</p>
+                    <span>Access anytime</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the modal and button elements
+            var modal = document.getElementById("statsModal");
+            var btn = document.getElementById("readMoreBtn");
+            var span = document.getElementsByClassName("close")[0];
+            
+            // Function to open the modal with smooth animation
+            function openModal() {
+                modal.style.display = "block";
+                // Trigger reflow to ensure the display change takes effect
+                void modal.offsetWidth;
+                // Add the 'show' class to trigger the fade-in animation
+                modal.classList.add('show');
+                // Prevent body from scrolling when modal is open
+                document.body.style.overflow = 'hidden';
+            }
+            
+            // Function to close the modal
+            function closeModal() {
+                // Remove the 'show' class to trigger the fade-out animation
+                modal.classList.remove('show');
+                // Wait for the animation to complete before hiding the modal
+                setTimeout(function() {
+                    modal.style.display = "none";
+                    // Re-enable body scrolling
+                    document.body.style.overflow = 'auto';
+                }, 300); // Match this duration with your CSS transition time
+            }
+            
+            // Event listeners
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                openModal();
+            });
+            
+            span.addEventListener('click', closeModal);
+            
+            // Close modal when clicking outside the content
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && modal.style.display === 'block') {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <img src="assets/images/sync.png" alt="HealthSync logo-icon"
+                width="30" height="30">
+                    <span class="logo-text">HealthSync</span>
+                </div>
+                <p>Empowering students and young adults to achieve their fitness goals through personalized, evidence-based planning.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="benefits.html">Benefits</a></li>
+                    <li><a href="#calculator">Get Started</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Project Info</h4>
+                <p><strong>Team:</strong> Healthy Will</p>
+                <p><strong>Course:</strong> COMP 2154</p>
+                <p><strong>Project:</strong> System Development</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2026 HealthSync by Healthy Will Team. All rights reserved.</p>
+            <p>Built for students, by students | Privacy-focused & Free Forever</p>
+        </div>
+    </footer>
+</body>
