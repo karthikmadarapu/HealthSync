@@ -1,7 +1,14 @@
-import { calculateBMI, calculateBMR, calculateTDEE } from "../utils/calculations";
+import { calculateBMI, calculateBMR, calculateTDEE } from "../utils/calculations.js";
 
 export function calculateHealth(req, res) {
+
   const { age, height, weight, activityLevel, goal } = req.body;
+
+  if (!age || !height || !weight || !activityLevel || !goal) {
+    return res.status(400).json({
+      error: "Missing required fields"
+    });
+  }
 
   const bmi = calculateBMI(height, weight);
   const bmr = calculateBMR(age, height, weight);
@@ -11,7 +18,8 @@ export function calculateHealth(req, res) {
 
   if (goal === "muscle_gain") {
     recommendedCalories += 300;
-  } else if (goal === "fat_loss") {
+  } 
+  else if (goal === "fat_loss") {
     recommendedCalories -= 300;
   }
 
