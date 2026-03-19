@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HealthSync - Your Personal Fitness & Nutrition Planner</title>
-    <link rel="stylesheet" href="../cssFiles/styles.css">
+    <link rel="stylesheet" href="../cssFiles/main.css">
     
 </head>
 <body>
@@ -23,7 +23,7 @@
         </label>
         <ul class="nav-links">
             <li><a href="index.html" class="active">Home</a></li>
-            <ul><a href="about.html">About</a></ul>
+            <li><a href="about.html">About</a></li>
             <li><a href="features.html">Features</a></li>
             <li><a href="benefits.html">Benefits</a></li>
             <li><a href="#calculator">Try Now</a></li>
@@ -67,22 +67,22 @@
             <h2 class="section-title">Struggling to Stay Healthy in College?</h2>
             <div class="problem-grid">
                 <div class="problem-card">
-                    <img src="assets/images/Problem/Problem.jpg">
+                    <img src="../assets/images/Problem/Problem.jpg">
                     <h3>No Time</h3>
                     <p>Busy schedules make it hard to plan meals and workouts consistently</p>
                 </div>
                 <div class="problem-card">
-                    <img src="assets/images/Problem/PT-nutrition.jpg">
+                    <img src="../assets/images/Problem/PT-nutrition.jpg">
                     <h3>Too Expensive</h3>
                     <p>Personal trainers and nutritionists cost hundreds of dollars per month</p>
                 </div>
                 <div class="problem-card">
-                    <img src="assets/images/Problem/Conflicting_advice.jpg">
+                    <img src="../assets/images/Problem/Conflicting_advice.jpg">
                     <h3>Confused</h3>
                     <p>Conflicting advice makes it unclear what to eat and how to exercise</p>
                 </div>
                 <div class="problem-card">
-                    <img src="assets/images/Problem/Device.jpg">
+                    <img src="../assets/images/Problem/Device.jpg">
                     <h3>Device Dependent</h3>
                     <p>Most apps require expensive wearables or paid subscriptions</p>
                 </div>
@@ -142,7 +142,7 @@
             <h2 class="section-title">Start Your Journey Today</h2>
             <p class="calculator-intro">Enter your information below to get your personalized fitness plan</p>
             
-            <form class="calculator-form" action="#" method="post">
+            <form id="healthForm" class="calculator-form">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="age">Age</label>
@@ -193,6 +193,10 @@
 
                 <button type="submit" class="btn btn-primary btn-large">Calculate My Plan</button>
                 <p class="form-note">Your data is not stored and remains private</p>
+                <div id="resultCard" style="display:none; margin-top:20px;">
+                <h3>Your Results</h3>
+                   <div id="result"></div>
+                </div>
             </form>
         </div>
     </section>
@@ -244,7 +248,7 @@
         <div class="footer-content">
             <div class="footer-section">
                 <div class="footer-logo">
-                    <img src="assets/images/sync.png" alt="HealthSync logo-icon"
+                    <img src="../assets/images/sync.png" alt="HealthSync logo-icon"
                 width="30" height="30">
                     <span class="logo-text">HealthSync</span>
                 </div>
@@ -274,6 +278,6 @@
             <p>Built for students, by students | Privacy-focused & Free Forever</p>
         </div>
     </footer>
+    <script src="../jsFiles/script.js"></script>
 </body>
-<script src="../jsFiles/script.js"></script>
 </html>
