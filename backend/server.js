@@ -13,10 +13,12 @@ app.use("/api", healthRoutes);
 
 // Test route
 app.get("/", (req, res) => {
-  res.send("🚀 Server Running");
+  res.send(" Server Running");
 });
 
 const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+

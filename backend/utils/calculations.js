@@ -1,6 +1,6 @@
 export function calculateBMI(height, weight) {
   const heightInMeters = height / 100;
-  return (weight / (heightInMeters * heightInMeters)).toFixed(2);
+  return weight / (heightInMeters * heightInMeters); 
 }
 
 export function calculateBMR(age, height, weight) {
