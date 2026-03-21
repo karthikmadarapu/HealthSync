@@ -99,7 +99,10 @@ Health-Tracker/
 **Karthik Madarapu**
 Aspiring Full-Stack Developer | Health-Tech Enthusiast  
 📍 Toronto, Canada
+
 **Sayuni Dinaya Wimaladharma**
+Aspiring Software Developer 
+
 **Noela Bilonda Kabundi**
 
 
