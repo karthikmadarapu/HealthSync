@@ -32,12 +32,22 @@ form.addEventListener("submit", async (e) => {
 
     const data = await res.json();
 
-    resultDiv.innerHTML = `
-      <p>📊 BMI: ${data.bmi}</p>
-      <p>🔥 BMR: ${data.bmr}</p>
-      <p>⚡ TDEE: ${data.tdee}</p>
-      <p>🍽 Calories: ${data.recommendedCalories}</p>
-    `;
+   resultDiv.innerHTML = `
+  <div style="
+    background: #111;
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 10px;
+  ">
+    <h3 style="color:#a3ff12;">Your Fitness Stats</h3>
+
+    <p>📊 <strong>BMI:</strong> ${data.bmi} (${data.bmiCategory})</p>
+    <p>🔥 <strong>BMR:</strong> ${data.bmr} kcal</p>
+    <p>⚡ <strong>TDEE:</strong> ${data.tdee} kcal</p>
+    <p>🍽 <strong>Daily Calories:</strong> ${data.recommendedCalories} kcal</p>
+  </div>
+`;
   } catch (err) {
     resultDiv.innerHTML = "❌ Server error";
     console.error(err);
