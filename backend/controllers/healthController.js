@@ -26,9 +26,22 @@ export function calculateHealth(req, res) {
     const activityMultiplier = activityMap[activityLevel] || 1.2;
 
     // 🔹 Calculations
-    const bmi = calculateBMI(height, weight);
+    const bmi = Number(calculateBMI(height, weight));
     const bmr = calculateBMR(age, height, weight);
     const tdee = bmr * activityMultiplier;
+
+    //Bmi Category
+    let bmiCategory = "";
+
+   if (bmi < 18.5) {
+   bmiCategory = "Underweight";
+   } else if (bmi < 25) {
+  bmiCategory = "Normal";
+  } else if (bmi < 30) {
+  bmiCategory = "Overweight";
+   } else {
+  bmiCategory = "Obese";
+  }
 
     // 🔹 Goal logic (FIXED ✅)
     let recommendedCalories = tdee;
@@ -43,6 +56,7 @@ export function calculateHealth(req, res) {
     // 🔹 Response
     res.json({
       bmi: bmi.toFixed(2),
+      bmiCategory,
       bmr: Math.round(bmr),
       tdee: Math.round(tdee),
       recommendedCalories: Math.round(recommendedCalories),
