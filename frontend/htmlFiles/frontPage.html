@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Health Tracker</title>
+</head>
+
+<body>
+
+  <!-- Your UI -->
+  <input id="age" placeholder="Age">
+  <input id="height" placeholder="Height">
+  <input id="weight" placeholder="Weight">
+
+  <select id="activity">
+    <option value="low">Low</option>
+    <option value="moderate">Moderate</option>
+    <option value="high">High</option>
+  </select>
+
+  <select id="goal">
+    <option value="muscle_gain">Muscle Gain</option>
+    <option value="fat_loss">Fat Loss</option>
+  </select>
+
+  <button onclick="calculateHealth()">Calculate</button>
+
+  <div id="result"></div>
+
+<!-- JS -->
+  <script>
+    async function calculateHealth() {
+      const age = document.getElementById("age").value;
+      const height = document.getElementById("height").value;
+      const weight = document.getElementById("weight").value;
+      const activityLevel = document.getElementById("activity").value;
+      const goal = document.getElementById("goal").value;
+
+      const response = await fetch("http://localhost:5000/api/health", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          age,
+          height,
+          weight,
+          activityLevel,
+          goal
+        })
+      });
+
+      const data = await response.json();
+
+      document.getElementById("result").innerHTML = `
+        BMI: ${data.bmi} <br>
+        BMR: ${data.bmr} <br>
+        TDEE: ${data.tdee} <br>
+        Calories: ${data.recommendedCalories}
+      `;
+    }
+  </script>
+
+</body>
+</html>

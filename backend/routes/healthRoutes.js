@@ -1,10 +1,8 @@
-const express = require("express");
+import express from "express";
+import { calculateHealth } from "../controllers/healthController.js";
+
 const router = express.Router();
 
-const {
-  calculateHealth
-} = require("../controllers/healthController");
+router.post("/health", calculateHealth);
 
-router.post("/calculate-health", calculateHealth);
-
-module.exports = router;
+export default router;

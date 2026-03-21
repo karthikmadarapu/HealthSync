@@ -1,6 +1,6 @@
 export function calculateBMI(height, weight) {
   const heightInMeters = height / 100;
-  return (weight / (heightInMeters * heightInMeters)).toFixed(2);
+  return weight / (heightInMeters * heightInMeters); 
 }
 
 export function calculateBMR(age, height, weight) {
@@ -8,13 +8,17 @@ export function calculateBMR(age, height, weight) {
   return (10 * weight + 6.25 * height - 5 * age + 5);
 }
 
+
 export function calculateTDEE(bmr, activityLevel) {
-  const activityMultipliers = {
-    low: 1.2,
+
+  const activityMultiplier = {
+    sedentary: 1.2,
+    light: 1.375,
     moderate: 1.55,
-    high: 1.75
+    active: 1.725
   };
 
-  return (bmr * activityMultipliers[activityLevel]).toFixed(0);
+  return Math.round(bmr * activityMultiplier[activityLevel]);
 }
+
 
