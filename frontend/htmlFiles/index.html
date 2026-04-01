@@ -11,9 +11,11 @@
     <!-- Navigation -->
     <nav>
         <div class="logo">
+            <a href="index.html" class="logo-link">
                 <img src="../assets/images/sync.png" alt="HealthSync logo-icon"
                 width="30" height="30">
-            <a >Health<span>Sync</span></a>
+                Health<span>Sync</span>
+            </a>
         </div>
         <input type="checkbox" id="menu-toggle-checkbox">
         <label for="menu-toggle-checkbox" class="menu-toggle">
@@ -28,7 +30,7 @@
             <li><a href="benefits.html">Benefits</a></li>
             <li><a href="#calculator">Try Now</a></li>
         </ul>
-        <a href="#calculator" class="nav-button">Get Started</a>
+        <a href="#" class="nav-button" onclick="openModal(); return false;">Get Started</a>
     </nav>
 
     <!-- Hero Section -->
@@ -38,7 +40,7 @@
             <p class="hero-subtitle">Plan your meals, workouts, and fitness goals with personalized guidance</p>
             <p class="hero-description">No wearables, No subscriptions, No stress.</p>
             <div class="cta-buttons">
-                <a href="#calculator" class="btn btn-primary">Get Started</a>
+                <a href="#" class="btn btn-primary" onclick="openModal(); return false;">Get Started</a>
                 <a href="#how-it-works" class="btn btn-secondary">Learn How It Works</a>
             </div>
             <div class="hero-stats">
@@ -136,71 +138,101 @@
         </div>
     </section>
 
-    <!-- Calculator Section -->
-    <section class="calculator" id="calculator">
-        <div class="calculator-container">
-            <h2 class="section-title">Start Your Journey Today</h2>
-            <p class="calculator-intro">Enter your information below to get your personalized fitness plan</p>
-            
-            <form id="healthForm" class="calculator-form">
+   <div id="signupModal" class="modal-overlay" style="display:none;">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+
+        <!-- Step 1 -->
+        <div id="step1">
+            <h2>Create Your Account</h2>
+            <p class="modal-subtitle">Step 1 of 4 — Account Info</p>
+            <div class="modal-form">
                 <div class="form-row">
-                    <div class="form-group">
-                        <label for="age">Age</label>
-                        <input type="number" id="age" name="age" min="18" max="30" placeholder="18-30" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="gender">Gender</label>
-                        <select id="gender" name="gender" required>
-                            <option value="">Select</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                        </select>
-                    </div>
+                    <input type="text" id="firstName" placeholder="First Name" required>
+                    <input type="text" id="lastName" placeholder="Last Name" required>
                 </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="height">Height (cm)</label>
-                        <input type="number" id="height" name="height" min="120" max="250" placeholder="170" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="weight">Weight (kg)</label>
-                        <input type="number" id="weight" name="weight" min="30" max="200" placeholder="70" required>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="activity">Activity Level</label>
-                    <select id="activity" name="activity" required>
-                        <option value="">Select your activity level</option>
-                        <option value="sedentary">Sedentary (little or no exercise)</option>
-                        <option value="light">Lightly Active (1-3 days/week)</option>
-                        <option value="moderate">Moderately Active (3-5 days/week)</option>
-                        <option value="very">Very Active (6-7 days/week)</option>
-                        <option value="extra">Extra Active (athlete/physical job)</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="goal">Fitness Goal</label>
-                    <select id="goal" name="goal" required>
-                        <option value="">Select your goal</option>
-                        <option value="lose">Fat Loss / Weight Loss</option>
-                        <option value="maintain">Maintain Current Weight</option>
-                        <option value="gain">Muscle Gain / Weight Gain</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="btn btn-primary btn-large">Calculate My Plan</button>
-                <p class="form-note">Your data is not stored and remains private</p>
-                <div id="resultCard" style="display:none; margin-top:20px;">
-                <h3>Your Results</h3>
-                   <div id="result"></div>
-                </div>
-            </form>
+                <input type="email" id="email" placeholder="Email Address" required>
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button class="btn btn-primary btn-large" onclick="goToStep2()">Continue →</button>
+            </div>
         </div>
-    </section>
 
+        <!-- Step 2 -->
+        <div id="step2" style="display:none;">
+            <h2>Your Fitness Profile</h2>
+            <p class="modal-subtitle">Step 2 of 4 — Personal Info</p>
+            <div class="modal-form">
+                <div class="form-row">
+                    <input type="number" id="mAge" placeholder="Age" min="13" max="100" required>
+                    <select id="mGender">
+                        <option value="">Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <input type="number" id="mHeightFt" placeholder="Height (ft)" min="1" max="8">
+                    <input type="number" id="mHeightIn" placeholder="Inches" min="0" max="11">
+                </div>
+                <input type="number" id="mWeight" placeholder="Weight (lbs)" required>
+                <select id="mActivity">
+                    <option value="">Activity Level</option>
+                    <option value="sedentary">Sedentary</option>
+                    <option value="light">Lightly Active</option>
+                    <option value="moderate">Moderately Active</option>
+                    <option value="very">Very Active</option>
+                    <option value="extra">Extra Active</option>
+                </select>
+                <div class="modal-buttons">
+                    <button class="btn btn-secondary" onclick="goBackToStep1()">← Back</button>
+                    <button class="btn btn-primary" onclick="goToStep3()">Continue →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div id="step3" style="display:none;">
+            <h2>Your Goals</h2>
+            <p class="modal-subtitle">Step 3 of 4 — Pick up to 3 goals</p>
+            <div class="goals-grid">
+                <button class="goal-btn" onclick="toggleGoal(this)" data-value="lose">Lose weight</button>
+                <button class="goal-btn" onclick="toggleGoal(this)" data-value="maintain">Maintain weight</button>
+                <button class="goal-btn" onclick="toggleGoal(this)" data-value="gain_weight">Gain weight</button>
+                <button class="goal-btn" onclick="toggleGoal(this)" data-value="gain_muscle">Gain muscle</button>
+                <button class="goal-btn" onclick="toggleGoal(this)" data-value="diet">Modify my diet</button>
+                <button class="goal-btn" onclick="toggleGoal(this)" data-value="stress">Manage stress</button>
+                <button class="goal-btn" onclick="toggleGoal(this)" data-value="steps">Increase step count</button>
+                <button class="goal-btn" onclick="toggleGoal(this)" data-value="endurance">Build endurance</button>
+            </div>
+            <div class="modal-buttons" style="margin-top: 1.5rem;">
+                <button class="btn btn-secondary" onclick="goBackToStep2()">← Back</button>
+                <button class="btn btn-primary" onclick="submitSignup()">Continue →</button>
+            </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div id="step4" style="display:none;">
+            <div style="text-align:center; margin-bottom: 1.5rem;">
+                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">💪</div>
+                <h2 style="color:#CCFF00; font-size:1.8rem;">Welcome to HealthSync!</h2>
+                <p class="modal-subtitle">Your account is ready. Sign in to get started.</p>
+            </div>
+            <div class="modal-form">
+                <input type="text" id="signInUsername" placeholder="Username">
+                <input type="password" id="signInPassword" placeholder="Password">
+                <button class="btn btn-primary btn-large" onclick="handleSignIn()"
+                    style="width:100%; margin-top:0.5rem;">Sign In</button>
+                <p style="text-align:center; color:#aaa; font-size:0.85rem;">
+                    Don't have an account?
+                    <a href="#" onclick="goBackToStep1()" style="color:#CCFF00;">Sign up</a>
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>
     <!-- FAQ Section -->
     <section class="faq">
         <div class="container">
