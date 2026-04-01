@@ -1,12 +1,16 @@
 import express from "express";
 import cors from "cors";
 import healthRoutes from "./routes/healthRoutes.js";
+import authRoutes from "./routes/authRoute.js";
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Auth Routes(Signup/ Login)
+app.use("/api/auth", authRoutes);
 
 // Routes
 app.use("/api", healthRoutes);
