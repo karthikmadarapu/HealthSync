@@ -30,8 +30,14 @@
             <li><a href="benefits.html">Benefits</a></li>
             <li><a href="#calculator">Try Now</a></li>
         </ul>
-        <a href="#" class="nav-button" onclick="openModal(); return false;">Get Started</a>
+    <!--  User Profile Button  -->
+        <div class="profile-icon" id="profileBtn">
+           <img src="../assets/images/profile.png" alt="profile" />
+        </div>
+    
+    
     </nav>
+
 
     <!-- Hero Section -->
     <section class="hero" id="home">
@@ -151,9 +157,9 @@
                     <input type="text" id="firstName" placeholder="First Name" required>
                     <input type="text" id="lastName" placeholder="Last Name" required>
                 </div>
-                <input type="email" id="email" placeholder="Email Address" required>
                 <input type="text" id="username" placeholder="Username" required>
                 <input type="password" id="password" placeholder="Password" required>
+                <input type="password" id="confirmPassword" placeholder="ConfirmPassword" required>
                 <button class="btn btn-primary btn-large" onclick="goToStep2()">Continue →</button>
             </div>
         </div>
