@@ -148,8 +148,39 @@
     <div class="modal-box">
         <button class="modal-close" onclick="closeModal()">✕</button>
 
+
+        <!-- STEP 0 (NEW LOGIN / SIGNUP UI) -->
+    <div id="step0">
+    <h2>Create your account</h2>
+     <p class="modal-subtitle">Step 0 of 4 - Login Portal</p>
+    <input type="email" id="authEmail" placeholder="Email address">
+
+    <div class="password-field">
+        <input type="password" id="authPassword" placeholder="Create a password">
+        <span onclick="togglePassword()">👁</span>
+    </div>
+
+    <p class="info-text">Must be at least 10 characters, no spaces.</p>
+
+    <div class="terms">
+        <input type="checkbox" id="authTerms">
+        <label>I agree to Terms & Conditions</label>
+    </div>
+
+    <button class="btn btn-primary btn-large" onclick="goToStep1FromAuth()">
+        Continue
+    </button>
+
+    <p class="divider">or</p>
+
+    <button class="google-btn">Continue with Google</button>
+    <button class="facebook-btn">Continue with Facebook</button>
+    </div>
+
         <!-- Step 1 -->
-        <div id="step1">
+        <div id="step1" style = "display:none;" >
+            <button onclick="goBackToAuth()" class="back-btn">← Back</button>
+            
             <h2>Create Your Account</h2>
             <p class="modal-subtitle">Step 1 of 4 — Account Info</p>
             <div class="modal-form">

@@ -731,6 +731,141 @@ margin-top: 1rem;
     gap: 1rem;
 }
 
+
+/* =========================
+   STEP 0 AUTH STYLING
+========================= */
+
+#step0 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Inputs (override modal ones slightly for premium look) */
+#step0 input {
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 14px;
+    color: white;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+#step0 input:focus {
+    border-color: #CCFF00;
+    box-shadow: 0 0 8px rgba(204,255,0,0.4);
+}
+
+/* Password field */
+.password-field {
+    position: relative;
+}
+
+.password-field span {
+    position: absolute;
+    right: 12px;
+    top: 14px;
+    cursor: pointer;
+    color: #777;
+}
+
+.password-field span:hover {
+    color: #CCFF00;
+}
+
+/* Continue button (override your btn-primary ONLY for modal) */
+#step0 .btn-primary {
+    width: 100%;
+    border-radius: 30px;
+    padding: 14px;
+    background: #CCFF00;
+    color: black;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+#step0 .btn-primary:hover {
+    background: #b3e600;
+    transform: scale(1.03);
+}
+
+/* Divider */
+.divider {
+    text-align: center;
+    color: #777;
+    margin: 10px 0;
+    position: relative;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: #333;
+}
+
+.divider::before {
+    left: 0;
+}
+
+.divider::after {
+    right: 0;
+}
+
+/* Social buttons */
+.google-btn, .facebook-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* Google */
+.google-btn {
+    background: white;
+    color: black;
+}
+
+.google-btn:hover {
+    background: #f1f1f1;
+}
+
+/* Facebook */
+.facebook-btn {
+    background: #1877f2;
+    color: white;
+}
+
+.facebook-btn:hover {
+    background: #1664d9;
+}
+
+/* Terms */
+.terms {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #aaa;
+}
+
+.back-btn {  /*Back button from step 1 to auth */
+    background: none;
+    border: none;
+    color: #CCFF00;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
 .btn-secondary {
     background: transparent;
     color: #CCFF00;

@@ -71,19 +71,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // =========================
-// MODAL FUNCTIONS
+// MODAL FUNCTION
 // =========================
 
 function openModal() {
     document.getElementById('signupModal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
+     document.getElementById('step0').style.display = 'block';
+
+    document.getElementById('step1').style.display = 'none';
+    document.getElementById('step2').style.display = 'none';
+    document.getElementById('step3').style.display = 'none';
+    document.getElementById('step4').style.display = 'none';
 }
+
 
 function closeModal() {
     document.getElementById('signupModal').style.display = 'none';
     document.body.style.overflow = '';
-
-    document.getElementById('step1').style.display = 'block';
+    document.getElementById('step0').style.display = 'block';
+    document.getElementById('step1').style.display = 'none';
     document.getElementById('step2').style.display = 'none';
     document.getElementById('step3').style.display = 'none';
     document.getElementById('step4').style.display = 'none';
@@ -92,10 +99,40 @@ function closeModal() {
         .forEach(b => b.classList.remove('selected'));
 }
 
+// =========================
+// PASSWORD TOGGLE (STEP 0)
+// =========================
+function togglePassword() {
+    const input = document.getElementById("authPassword");
+    input.type = input.type === "password" ? "text" : "password";
+}
+
+
+
 
 // =========================
 // STEP NAVIGATION
 // =========================
+
+function goToStep1FromAuth() {
+    const email = document.getElementById("authEmail").value;
+    const password = document.getElementById("authPassword").value;
+    const terms = document.getElementById("authTerms").checked;
+
+    if (!email || !password) {
+        alert("Please fill all fields.");
+        return;
+    }
+
+    if (!terms) {
+        alert("Please accept terms.");
+        return;
+    }
+
+    // Move forward
+    document.getElementById("step0").style.display = "none";
+    document.getElementById("step1").style.display = "block";
+}
 
 function goToStep2() {
     const firstName = document.getElementById('firstName').value;
@@ -129,6 +166,10 @@ function goToStep3() {
 
     document.getElementById('step2').style.display = 'none';
     document.getElementById('step3').style.display = 'block';
+}
+function goBackToAuth() {
+    document.getElementById('step1').style.display = 'none';
+    document.getElementById('step0').style.display = 'block';
 }
 
 function goBackToStep1() {
