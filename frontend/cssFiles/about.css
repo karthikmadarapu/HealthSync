@@ -38,6 +38,7 @@ a {
     display: flex;
     align-items: center;
     gap: 10px;
+    margin-right: 100px;
 }
 
 .logo a {
@@ -47,7 +48,14 @@ a {
     text-decoration: none;
     display: flex;
     align-items: center;
+    gap: 10px;
     letter-spacing: 0.5px;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.logo a:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
 }
 
 .logo span {
