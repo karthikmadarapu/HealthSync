@@ -276,4 +276,10 @@ async function handleSignIn() {
         alert("Server error");
         console.error(err);
     }
+}  // ← closes handleSignIn here
+
+// showSignIn is NOW outside
+function showSignIn() {
+    switchStep("step0", "step4");
 }
+
