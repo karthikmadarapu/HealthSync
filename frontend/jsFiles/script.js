@@ -56,16 +56,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const profileBtn = document.getElementById("profileBtn");
 
     if (profileBtn) {
-        profileBtn.addEventListener("click", () => {
-            const user = localStorage.getItem("user");
-            if (user) {
-                window.location.href = "profile.html";
-            } else {
-                openModal();
-            }
-        });
-    }
-});
+    profileBtn.addEventListener("click", () => {
+        openModal();
+    });
+}
 
 
 // =========================
@@ -282,3 +276,4 @@ async function handleSignIn() {
 function showSignIn() {
     switchStep("step0", "step4");
 }
+});
