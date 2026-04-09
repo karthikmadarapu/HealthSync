@@ -282,4 +282,3 @@ async function handleSignIn() {
 function showSignIn() {
     switchStep("step0", "step4");
 }
-
