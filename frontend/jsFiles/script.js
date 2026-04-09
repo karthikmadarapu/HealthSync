@@ -200,7 +200,9 @@ function toggleGoal(btn) {
 // =========================
 // SIGNUP
 // =========================
+
 async function submitSignup() {
+      alert("submitSignup running");
     const selectedGoals = [...document.querySelectorAll('.goal-btn.selected')]
         .map(btn => btn.dataset.value);
 
@@ -211,30 +213,55 @@ async function submitSignup() {
 
     const user = {
         firstName: document.getElementById("firstName").value,
-        lastName: document.getElementById("lastName").value,
+        lastName: document.getElementById("lastName")?.value || "",
         username: document.getElementById("username").value,
         password: document.getElementById("password").value,
         goals: selectedGoals
     };
 
+    // ✅ MOVE UI FIRST (NO MORE FREEZE)
+    switchStep("step3", "step4");
+
+    // save locally
+    localStorage.setItem("user", JSON.stringify(user));
+
+    //  RUN BACKEND IN BACKGROUND
     try {
-        const res = await fetch("http://localhost:5000/api/auth/signup", {
+        await fetch("http://localhost:5000/api/auth/signup", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(user)
         });
-
-        const data = await res.json();
-
-        if (res.ok) {
-            localStorage.setItem("user", JSON.stringify(user));
-            switchStep("step3", "step4");
-        } else {
-            alert(data.error);
-        }
     } catch (err) {
-        alert("Server error");
-        console.error(err);
+        console.warn("Signup API failed (ignored for now)");
+    }
+
+    // 🔥 CALL HEALTH API
+    try {
+        const age = document.getElementById("mAge").value;
+        const height = document.getElementById("mHeightFt").value * 30.48;
+        const weight = document.getElementById("mWeight").value;
+        const activityLevel = document.getElementById("mActivity").value;
+        const mainGoal = selectedGoals[0];
+
+        const res2 = await fetch("http://localhost:5000/api/health", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                age,
+                height,
+                weight,
+                activityLevel,
+                goal: mainGoal
+            })
+        });
+
+        const healthData = await res2.json();
+
+        showResultModal(healthData);
+
+    } catch (err) {
+        console.error("Health API failed:", err);
     }
 }
 
@@ -276,4 +303,25 @@ async function handleSignIn() {
 function showSignIn() {
     switchStep("step0", "step4");
 }
+// ==========================
+// Result Modal after step 4
+// 🔥 ADD THIS HERE
+// ==========================
+function showResultModal(data) {
+    const calories = data.recommendedCalories;
+
+    const protein = Math.round(calories * 0.3 / 4);
+    const carbs = Math.round(calories * 0.4 / 4);
+    const fats = Math.round(calories * 0.3 / 9);
+
+    document.getElementById("macroResults").innerHTML = `
+        <p><strong>Calories:</strong> ${calories} kcal</p>
+        <p><strong>Protein:</strong> ${protein}g</p>
+        <p><strong>Carbs:</strong> ${carbs}g</p>
+        <p><strong>Fats:</strong> ${fats}g</p>
+    `;
+
+    document.getElementById("resultModal").style.display = "block";
+}
+
 });

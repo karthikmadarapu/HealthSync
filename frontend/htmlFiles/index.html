@@ -7,94 +7,9 @@
     <link rel="stylesheet" href="../cssFiles/main.css">
     
 </head>
-<script src="../jsFiles/script.js"></script>
-<script>
-// Fallback in case script.js fails to load
-if (typeof openModal === 'undefined') {
-    function openModal() {
-        document.getElementById('signupModal').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-        document.querySelectorAll('.modal-step').forEach(step => {
-            step.classList.remove('modal-step-active');
-            step.classList.add('modal-step-hidden');
-        });
-        document.getElementById('step0').classList.remove('modal-step-hidden');
-        document.getElementById('step0').classList.add('modal-step-active');
-    }
 
-    function closeModal() {
-        document.getElementById('signupModal').style.display = 'none';
-        document.body.style.overflow = '';
-    }
-
-    function switchStep(current, next) {
-        document.getElementById(current).classList.add('modal-step-hidden');
-        document.getElementById(current).classList.remove('modal-step-active');
-        document.getElementById(next).classList.remove('modal-step-hidden');
-        document.getElementById(next).classList.add('modal-step-active');
-    }
-
-    function showSignIn() { switchStep('step0', 'step4'); }
-    function goBackToAuth() { switchStep('step1', 'step0'); }
-    function goBackToStep1() { switchStep('step2', 'step1'); }
-    function goBackToStep2() { switchStep('step3', 'step2'); }
-    function togglePassword() {
-        const input = document.getElementById('authPassword');
-        input.type = input.type === 'password' ? 'text' : 'password';
-    }
-    function toggleGoal(btn) {
-        const selected = document.querySelectorAll('.goal-btn.selected');
-        if (!btn.classList.contains('selected') && selected.length >= 3) {
-            alert('You can only pick up to 3 goals.'); return;
-        }
-        btn.classList.toggle('selected');
-    }
-    function goToStep1FromAuth() {
-        const email = document.getElementById('authEmail').value;
-        const password = document.getElementById('authPassword').value;
-        const terms = document.getElementById('authTerms').checked;
-        if (!email || !password) { alert('Please fill all fields.'); return; }
-        if (!terms) { alert('Please accept terms.'); return; }
-        switchStep('step0', 'step1');
-    }
-    function goToStep2() {
-        const firstName = document.getElementById('firstName').value;
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-        if (!firstName || !username || !password || !confirmPassword) { alert('Please fill in all fields.'); return; }
-        if (password !== confirmPassword) { alert('Passwords do not match.'); return; }
-        switchStep('step1', 'step2');
-    }
-    function goToStep3() {
-        const age = document.getElementById('mAge').value;
-        const weight = document.getElementById('mWeight').value;
-        const activity = document.getElementById('mActivity').value;
-        if (!age || !weight || !activity) { alert('Please fill in all fields.'); return; }
-        switchStep('step2', 'step3');
-    }
-    async function submitSignup() {
-        const selected = document.querySelectorAll('.goal-btn.selected');
-        if (selected.length === 0) { alert('Please select at least one goal.'); return; }
-        switchStep('step3', 'step4');
-    }
-    async function handleSignIn() {
-        const username = document.getElementById('signInUsername').value;
-        const password = document.getElementById('signInPassword').value;
-        if (!username || !password) { alert('Please enter your username and password.'); return; }
-        alert(`Welcome back, ${username}! 🎉`);
-        closeModal();
-    }
-
-    document.getElementById('signupModal').addEventListener('click', function(e) {
-        if (e.target === this) closeModal();
-    });
-    const profileBtn = document.getElementById('profileBtn');
-    if (profileBtn) profileBtn.addEventListener('click', () => openModal());
-}
-</script>
-</body>
 <body>
+    <script src="jsFiles/script.js"></script>
     <!-- Navigation -->
     <nav>
         <div class="logo">
@@ -254,7 +169,7 @@ if (typeof openModal === 'undefined') {
         <button class="facebook-btn">📘 Continue with Facebook</button>
         <p class="already-user">Already have an account? <a href="#" onclick="showSignIn(); return false;">Sign in</a></p>
     </div>
-</div>
+  </div>
 
         <!-- STEP 1 -->
         <div id="step1" class="modal-step modal-step-hidden">
@@ -312,18 +227,28 @@ if (typeof openModal === 'undefined') {
             <h2>Your Goals</h2>
             <p class="modal-subtitle">Step 3 of 4 — Pick up to 3 goals</p>
             <div class="goals-grid">
-                <button class="goal-btn" onclick="toggleGoal(this)" data-value="lose">Lose weight</button>
+                
+               <button class="goal-btn" onclick="toggleGoal(this)" data-value="fat_loss">Lose weight</button>
+
                 <button class="goal-btn" onclick="toggleGoal(this)" data-value="maintain">Maintain weight</button>
-                <button class="goal-btn" onclick="toggleGoal(this)" data-value="gain_weight">Gain weight</button>
-                <button class="goal-btn" onclick="toggleGoal(this)" data-value="gain_muscle">Gain muscle</button>
+
+                <button class="goal-btn" onclick="toggleGoal(this)" data-value="weight_gain">Gain weight</button>
+
+                <button class="goal-btn" onclick="toggleGoal(this)" data-value="muscle_gain">Gain muscle</button>
+
                 <button class="goal-btn" onclick="toggleGoal(this)" data-value="diet">Modify my diet</button>
+
                 <button class="goal-btn" onclick="toggleGoal(this)" data-value="stress">Manage stress</button>
+
                 <button class="goal-btn" onclick="toggleGoal(this)" data-value="steps">Increase step count</button>
+
                 <button class="goal-btn" onclick="toggleGoal(this)" data-value="endurance">Build endurance</button>
+
             </div>
             <div class="modal-buttons" style="margin-top: 1.5rem;">
                 <button class="btn btn-secondary" onclick="goBackToStep2()">← Back</button>
                 <button class="btn btn-primary" onclick="submitSignup()">Continue →</button>
+                 
             </div>
         </div>
 
@@ -346,7 +271,37 @@ if (typeof openModal === 'undefined') {
         </div>
 
     </div>
-</div>
+  </div>
+
+
+
+   <!-- 🔥 RESULT MODAL -->
+  <div id="resultModal" class="modal">
+  <div class="modal-content">
+
+    <h2>Your Daily Plan 🔥</h2>
+
+    <div id="macroResults">
+      <!-- JS will inject data here -->
+    </div>
+
+    <div class="modal-buttons">
+      <button onclick="goToProfile()" class="btn-primary">
+        Go to Profile
+      </button>
+
+      <button onclick="goToMealPlan()" class="btn-secondary">
+        View Meal Plan
+      </button>
+    </div>
+
+    <span class="close-btn" onclick="closeModal()">×</span>
+
+  </div>
+    </div>
+
+
+
     <!-- FAQ Section -->
     <section class="faq">
         <div class="container">
@@ -424,6 +379,6 @@ if (typeof openModal === 'undefined') {
             <p>Built for students, by students | Privacy-focused & Free Forever</p>
         </div>
     </footer>
-    <script src="../jsFiles/script.js"></script>
+   
 </body>
 </html>
