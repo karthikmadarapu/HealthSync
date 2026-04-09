@@ -649,26 +649,41 @@ font-size: 0.9rem;
 margin-top: 1rem;
 }
 /* Modal */
+
+
+/* =============================
+   MODAL OVERLAY (GLASS EFFECT)
+============================= */
 .modal-overlay {
     position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.8);
-    z-index: 2000;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 9999;
+    padding: 20px;
 }
 
 .modal-box {
-    background: #1a1a1a;
-    border: 1px solid #333;
-    border-radius: 16px;
-    padding: 2.5rem;
-    width: 90%;
-    max-width: 500px;
+    background: rgba(20, 20, 20, 0.95);
+    border-radius: 18px;
+    padding: 0;
+    width: 380px;
+    max-width: 92vw;
+    color: white;
+    box-shadow: 0 0 40px rgba(163, 255, 18, 0.2);
+    border: 1px solid rgba(204, 255, 0, 0.2);
     position: relative;
-    animation: fadeInUp 0.3s ease;
+    min-height: unset;         /* REMOVE fixed height - let content decide */
+    overflow: hidden;
 }
+
 
 .modal-close {
     position: absolute;
@@ -679,23 +694,31 @@ margin-top: 1rem;
     color: #aaa;
     font-size: 1.2rem;
     cursor: pointer;
-    transition: color 0.2s;
+    transition: all 0.2s ease;
+    line-height: 1;
+    padding: 4px 8px;
+    border-radius: 50%;
+    z-index: 100;              /* above all steps */
 }
 
 .modal-close:hover {
-    color: #fff;
+    color: #CCFF00;
+    background: rgba(204, 255, 0, 0.1);
+    transform: rotate(90deg);
 }
 
 .modal-box h2 {
     color: #CCFF00;
-    font-size: 1.8rem;
-    margin-bottom: 0.3rem;
+    font-size: 1.6rem;          /* slightly smaller title */
+    margin-bottom: 0.2rem;
+    font-weight: 700;
 }
+
 
 .modal-subtitle {
     color: #aaa;
-    margin-bottom: 1.5rem;
-    font-size: 0.9rem;
+    margin-bottom: 0.82rem;
+    font-size: 0.8rem;
 }
 
 .modal-form {
@@ -731,15 +754,116 @@ margin-top: 1rem;
     gap: 1rem;
 }
 
+/* =======================   
+  Modal step transitions 
+======================*/
+
+.modal-step {
+    position: relative;
+    width: 100%;
+    padding: 2rem 2rem 1.8rem;   /* tighter padding */
+    box-sizing: border-box;
+    transition: opacity 0.3s ease;
+}
+.modal-step-hidden {
+    display: none;             /* SIMPLEST way - just hide it completely */
+    pointer-events: none;
+    visibility: hidden;
+}
+
+.modal-step-active {
+    display: block;
+    opacity: 1;
+    transform: translateX(0);
+    visibility: visible;
+}
+
+/* ========================= 
+   FLOATING LABELS
+========================= */
+.float-group {
+    position: relative;
+    width: 100%;
+}
+
+/* Floating label inputs - compact */
+.float-group input {
+    width: 100%;
+    background: #111;
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 18px 14px 6px 14px;
+    color: white;
+    font-size: 14px;
+    box-sizing: border-box;
+    outline: none;
+    height: 48px;               /* SMALLER */
+    transition: border-color 0.2s;
+}
+
+.float-group input:focus {
+    border-color: #CCFF00;
+    box-shadow: 0 0 6px rgba(204, 255, 0, 0.15);
+}
+
+.float-group label {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    font-size: 14px;
+    pointer-events: none;
+    transition: all 0.2s ease;
+}
+
+.float-group input:focus ~ label,
+.float-group input:not(:placeholder-shown) ~ label {
+    top: 9px;
+    transform: translateY(0);
+    font-size: 10px;
+    color: #CCFF00;
+    letter-spacing: 0.3px;
+}
+
+.float-group.password-field span {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #555;
+    font-size: 15px;
+}
+
+.float-group.password-field span:hover {
+    color: #CCFF00;
+}
+
+.info-text {
+    color: #555;
+    font-size: 11px;
+    margin-top: -2px;
+}
+
 
 /* =========================
    STEP 0 AUTH STYLING
 ========================= */
 
+
+.modal-box {
+    padding: 0;
+}
+#step0 input::placeholder {
+    color: #777;
+}
 #step0 {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    width: 100%;           /* ADD THIS */
+    padding: 0 0.2rem;     /* ADD THIS */
 }
 
 /* Inputs (override modal ones slightly for premium look) */
@@ -761,6 +885,11 @@ margin-top: 1rem;
 /* Password field */
 .password-field {
     position: relative;
+    width: 100% ;
+}
+
+.password-field input {
+    width: 100%;        /* ADD THIS */
 }
 
 .password-field span {
@@ -778,24 +907,29 @@ margin-top: 1rem;
 /* Continue button (override your btn-primary ONLY for modal) */
 #step0 .btn-primary {
     width: 100%;
-    border-radius: 30px;
-    padding: 14px;
+    border-radius: 25px;
+    padding: 12px;              /* smaller padding */
+    font-size: 15px;            /* smaller text */
     background: #CCFF00;
     color: black;
-    font-weight: bold;
-    margin-top: 10px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    margin-top: 4px;
+    transition: all 0.2s ease;
 }
 
 #step0 .btn-primary:hover {
-    background: #b3e600;
-    transform: scale(1.03);
+    background: #b8e600;
+    transform: translateY(-1px);
 }
 
 /* Divider */
 .divider {
     text-align: center;
-    color: #777;
-    margin: 10px 0;
+    color: #444;
+    font-size: 12px;
+    margin: 2px 0;
     position: relative;
 }
 
@@ -804,18 +938,13 @@ margin-top: 1rem;
     content: "";
     position: absolute;
     top: 50%;
-    width: 40%;
+    width: 38%;
     height: 1px;
-    background: #333;
+    background: #2a2a2a;
 }
 
-.divider::before {
-    left: 0;
-}
-
-.divider::after {
-    right: 0;
-}
+.divider::before { left: 0; }
+.divider::after  { right: 0; }
 
 /* Social buttons */
 .google-btn, .facebook-btn {
@@ -829,16 +958,40 @@ margin-top: 1rem;
 }
 
 /* Google */
+/* =========================
+   SOCIAL BUTTONS (PRO LEVEL)
+========================= */
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px;              /* smaller */
+    border-radius: 10px;
+    font-size: 13px;            /* smaller text */
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.social-btn img {
+    width: 16px;
+    height: 16px;
+}
+
 .google-btn {
-    background: white;
-    color: black;
+    background: #ffffff;
+    color: #333;
 }
 
 .google-btn:hover {
     background: #f1f1f1;
+    transform: translateY(-1px);
 }
 
-/* Facebook */
 .facebook-btn {
     background: #1877f2;
     color: white;
@@ -846,6 +999,35 @@ margin-top: 1rem;
 
 .facebook-btn:hover {
     background: #1664d9;
+    transform: translateY(-1px);
+}
+
+/* =========================
+   BUTTON LOADING STATE
+========================= */
+
+.btn-loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.btn-loading::after {
+    content: "";
+    width: 18px;
+    height: 18px;
+    border: 2px solid #000;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: translateY(-50%) rotate(360deg); }
 }
 
 /* Terms */
@@ -853,8 +1035,8 @@ margin-top: 1rem;
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 13px;
-    color: #aaa;
+    font-size: 12px;
+    color: #888;
 }
 
 .back-btn {  /*Back button from step 1 to auth */
@@ -865,18 +1047,6 @@ margin-top: 1rem;
     cursor: pointer;
     margin-bottom: 10px;
 }
-
-.btn-secondary {
-    background: transparent;
-    color: #CCFF00;
-    border: 2px solid #CCFF00;
-}
-
-.btn-secondary:hover {
-    background: #CCFF00;
-    color: #000;
-}
-
 .btn-secondary {
     background: transparent;
     color: #CCFF00;
@@ -1050,6 +1220,23 @@ footer {
     }
 }
 
+
+@keyframes scaleUp {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .menu-toggle {
@@ -1113,3 +1300,7 @@ footer {
         text-align: center;
     }
 }
+
+
+
+
