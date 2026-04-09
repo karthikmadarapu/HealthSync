@@ -1,12 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    // Close modal when clicking outside
     document.getElementById('signupModal').addEventListener('click', function (e) {
         if (e.target === this) closeModal();
     });
 
     // =========================
-    // CALCULATOR (UNCHANGED)
+    // CALCULATOR
     // =========================
     const form = document.getElementById("healthForm");
 
@@ -52,14 +51,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // =========================
-    // PROFILE ICON LOGIC
+    // PROFILE ICON
     // =========================
     const profileBtn = document.getElementById("profileBtn");
 
     if (profileBtn) {
         profileBtn.addEventListener("click", () => {
             const user = localStorage.getItem("user");
-
             if (user) {
                 window.location.href = "profile.html";
             } else {
@@ -71,36 +69,48 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // =========================
-// MODAL FUNCTION
+// STEP SWITCH
 // =========================
+function switchStep(current, next) {
+    const currentEl = document.getElementById(current);
+    const nextEl = document.getElementById(next);
 
+    currentEl.classList.remove("modal-step-active");
+    currentEl.classList.add("modal-step-hidden");
+
+    setTimeout(() => {
+        nextEl.classList.remove("modal-step-hidden");
+        nextEl.classList.add("modal-step-active");
+    }, 150);
+}
+
+
+// =========================
+// MODAL
+// =========================
 function openModal() {
     document.getElementById('signupModal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
-     document.getElementById('step0').style.display = 'block';
 
-    document.getElementById('step1').style.display = 'none';
-    document.getElementById('step2').style.display = 'none';
-    document.getElementById('step3').style.display = 'none';
-    document.getElementById('step4').style.display = 'none';
+    document.querySelectorAll('.modal-step').forEach(step => {
+        step.classList.remove("modal-step-active");
+        step.classList.add("modal-step-hidden");
+    });
+
+    document.getElementById('step0').classList.add("modal-step-active");
+    document.getElementById('step0').classList.remove("modal-step-hidden");
 }
-
 
 function closeModal() {
     document.getElementById('signupModal').style.display = 'none';
     document.body.style.overflow = '';
-    document.getElementById('step0').style.display = 'block';
-    document.getElementById('step1').style.display = 'none';
-    document.getElementById('step2').style.display = 'none';
-    document.getElementById('step3').style.display = 'none';
-    document.getElementById('step4').style.display = 'none';
-
     document.querySelectorAll('.goal-btn.selected')
         .forEach(b => b.classList.remove('selected'));
 }
 
+
 // =========================
-// PASSWORD TOGGLE (STEP 0)
+// PASSWORD TOGGLE
 // =========================
 function togglePassword() {
     const input = document.getElementById("authPassword");
@@ -108,12 +118,9 @@ function togglePassword() {
 }
 
 
-
-
 // =========================
 // STEP NAVIGATION
 // =========================
-
 function goToStep1FromAuth() {
     const email = document.getElementById("authEmail").value;
     const password = document.getElementById("authPassword").value;
@@ -123,15 +130,18 @@ function goToStep1FromAuth() {
         alert("Please fill all fields.");
         return;
     }
-
     if (!terms) {
         alert("Please accept terms.");
         return;
     }
 
-    // Move forward
-    document.getElementById("step0").style.display = "none";
-    document.getElementById("step1").style.display = "block";
+    const btn = document.querySelector("#step0 .btn-primary");
+    btn.classList.add("btn-loading");
+
+    setTimeout(() => {
+        btn.classList.remove("btn-loading");
+        switchStep("step0", "step1");
+    }, 600);
 }
 
 function goToStep2() {
@@ -144,49 +154,44 @@ function goToStep2() {
         alert('Please fill in all fields.');
         return;
     }
-
     if (password !== confirmPassword) {
-        alert("Passwords do not match");
+        alert("Passwords do not match.");
         return;
     }
 
-    document.getElementById('step1').style.display = 'none';
-    document.getElementById('step2').style.display = 'block';
+    switchStep("step1", "step2");
 }
 
 function goToStep3() {
     const age = document.getElementById('mAge').value;
+    const heightFt = document.getElementById('mHeightFt').value;
     const weight = document.getElementById('mWeight').value;
     const activity = document.getElementById('mActivity').value;
 
-    if (!age || !weight || !activity) {
-        alert('Please fill in all fields.');
+    if (!age || !heightFt || !weight || !activity) {
+        alert('Please fill in all required fields.');
         return;
     }
 
-    document.getElementById('step2').style.display = 'none';
-    document.getElementById('step3').style.display = 'block';
+    switchStep("step2", "step3");
 }
+
 function goBackToAuth() {
-    document.getElementById('step1').style.display = 'none';
-    document.getElementById('step0').style.display = 'block';
+    switchStep("step1", "step0");
 }
 
 function goBackToStep1() {
-    document.getElementById('step2').style.display = 'none';
-    document.getElementById('step1').style.display = 'block';
+    switchStep("step2", "step1");
 }
 
 function goBackToStep2() {
-    document.getElementById('step3').style.display = 'none';
-    document.getElementById('step2').style.display = 'block';
+    switchStep("step3", "step2");
 }
 
 
 // =========================
 // GOALS
 // =========================
-
 function toggleGoal(btn) {
     const selected = document.querySelectorAll('.goal-btn.selected');
 
@@ -194,17 +199,14 @@ function toggleGoal(btn) {
         alert('You can only pick up to 3 goals.');
         return;
     }
-
     btn.classList.toggle('selected');
 }
 
 
 // =========================
-// SIGNUP (REAL BACKEND)
+// SIGNUP
 // =========================
-
 async function submitSignup() {
-
     const selectedGoals = [...document.querySelectorAll('.goal-btn.selected')]
         .map(btn => btn.dataset.value);
 
@@ -232,13 +234,10 @@ async function submitSignup() {
 
         if (res.ok) {
             localStorage.setItem("user", JSON.stringify(user));
-
-            document.getElementById('step3').style.display = 'none';
-            document.getElementById('step4').style.display = 'block';
+            switchStep("step3", "step4");
         } else {
             alert(data.error);
         }
-
     } catch (err) {
         alert("Server error");
         console.error(err);
@@ -247,11 +246,9 @@ async function submitSignup() {
 
 
 // =========================
-// LOGIN (REAL BACKEND)
+// LOGIN
 // =========================
-
 async function handleSignIn() {
-
     const username = document.getElementById('signInUsername').value;
     const password = document.getElementById('signInPassword').value;
 
@@ -275,9 +272,13 @@ async function handleSignIn() {
         } else {
             alert("Invalid credentials");
         }
-
     } catch (err) {
         alert("Server error");
         console.error(err);
     }
+}  // ← closes handleSignIn here
+
+// showSignIn is NOW outside
+function showSignIn() {
+    switchStep("step0", "step4");
 }

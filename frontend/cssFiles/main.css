@@ -523,6 +523,138 @@ nav {
     line-height: 1.7;
 }
 
+#step0 {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#step0 h2 {
+    color: #CCFF00;
+    font-size: 1.8rem;
+    margin-bottom: 0.2rem;
+}
+
+#step0 input {
+    background: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    color: #fff;
+    font-size: 1rem;
+    width: 100%;
+    transition: border-color 0.2s;
+}
+
+#step0 input:focus {
+    outline: none;
+    border-color: #CCFF00;
+}
+
+.password-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-field input {
+    width: 100%;
+    padding-right: 3rem;
+}
+
+.password-field span {
+    position: absolute;
+    right: 1rem;
+    cursor: pointer;
+    color: #aaa;
+    font-size: 1rem;
+}
+
+.info-text {
+    color: #aaa;
+    font-size: 0.85rem;
+    margin-top: -0.5rem;
+}
+
+.terms {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.terms input {
+    width: auto !important;
+    accent-color: #CCFF00;
+}
+
+.divider {
+    text-align: center;
+    color: #aaa;
+    position: relative;
+    font-size: 0.9rem;
+}
+
+.google-btn {
+    background: #fff;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: opacity 0.2s;
+}
+
+.google-btn:hover {
+    opacity: 0.9;
+}
+
+.facebook-btn {
+    background: #1877F2;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: opacity 0.2s;
+}
+
+.facebook-btn:hover {
+    opacity: 0.9;
+}
+
+.already-user {
+    text-align: center;
+    color: #aaa;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+.already-user a {
+    color: #CCFF00;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.already-user a:hover {
+    text-decoration: underline;
+}
+
+.modal-step-hidden {
+    display: none !important;
+}
+
+.modal-step-active {
+    display: block !important;
+}
+
 /* Benefits Section */
 .benefits {
     padding: 5rem 5%;
@@ -666,6 +798,7 @@ margin-top: 1rem;
     padding: 2.5rem;
     width: 90%;
     max-width: 500px;
+    max-height: 85vh;
     position: relative;
     animation: fadeInUp 0.3s ease;
 }
@@ -736,116 +869,113 @@ margin-top: 1rem;
    STEP 0 AUTH STYLING
 ========================= */
 
-#step0 {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+#step0 h2 {
+    color: #CCFF00;
+    font-size: 1.8rem;
+    margin-bottom: 0.2rem;
 }
 
-/* Inputs (override modal ones slightly for premium look) */
-#step0 input {
-    background: #111;
-    border: 1px solid #333;
-    border-radius: 10px;
-    padding: 14px;
-    color: white;
-    font-size: 14px;
-    transition: 0.3s;
-}
-
-#step0 input:focus {
-    border-color: #CCFF00;
-    box-shadow: 0 0 8px rgba(204,255,0,0.4);
-}
-
-/* Password field */
 .password-field {
     position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-field input {
+    width: 100%;
+    padding-right: 3rem !important;
 }
 
 .password-field span {
     position: absolute;
-    right: 12px;
-    top: 14px;
+    right: 1rem;
     cursor: pointer;
-    color: #777;
+    color: #aaa;
 }
 
-.password-field span:hover {
-    color: #CCFF00;
+.info-text {
+    color: #aaa;
+    font-size: 0.85rem;
+    margin-top: -0.5rem;
 }
 
-/* Continue button (override your btn-primary ONLY for modal) */
-#step0 .btn-primary {
-    width: 100%;
-    border-radius: 30px;
-    padding: 14px;
-    background: #CCFF00;
-    color: black;
-    font-weight: bold;
-    margin-top: 10px;
+.terms {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #aaa;
+    font-size: 0.9rem;
 }
 
-#step0 .btn-primary:hover {
-    background: #b3e600;
-    transform: scale(1.03);
+.terms input[type="checkbox"] {
+    width: auto;
+    accent-color: #CCFF00;
 }
 
-/* Divider */
-.divider {
-    text-align: center;
-    color: #777;
-    margin: 10px 0;
-    position: relative;
+.auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: #aaa;
+    font-size: 0.9rem;
 }
 
-.divider::before,
-.divider::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    width: 40%;
+.auth-divider::before,
+.auth-divider::after {
+    content: '';
+    flex: 1;
     height: 1px;
-    background: #333;
+    background: #444;
 }
 
-.divider::before {
-    left: 0;
-}
-
-.divider::after {
-    right: 0;
-}
-
-/* Social buttons */
-.google-btn, .facebook-btn {
-    width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    border: none;
-    font-weight: 500;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-/* Google */
 .google-btn {
-    background: white;
-    color: black;
+    background: #fff;
+    color: #000;
+    border: none;
+    border-radius: 50px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: opacity 0.2s;
 }
 
 .google-btn:hover {
-    background: #f1f1f1;
+    opacity: 0.85;
 }
 
-/* Facebook */
 .facebook-btn {
-    background: #1877f2;
-    color: white;
+    background: #1877F2;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: opacity 0.2s;
 }
 
 .facebook-btn:hover {
-    background: #1664d9;
+    opacity: 0.85;
+}
+
+.already-user {
+    text-align: center;
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.already-user a {
+    color: #CCFF00;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.already-user a:hover {
+    text-decoration: underline;
 }
 
 /* Terms */
