@@ -1,8 +1,19 @@
+// =========================
+// DOM READY (ONLY EVENTS HERE)
+// =========================
 document.addEventListener('DOMContentLoaded', function () {
 
-    document.getElementById('signupModal').addEventListener('click', function (e) {
-        if (e.target === this) closeModal();
-    });
+    const signupModal = document.getElementById('signupModal');
+    if (signupModal) {
+        signupModal.addEventListener('click', function (e) {
+            if (e.target === this) closeModal();
+        });
+    }
+
+    const profileBtn = document.getElementById("profileBtn");
+    if (profileBtn) {
+        profileBtn.addEventListener("click", openModal);
+    }
 
     // =========================
     // CALCULATOR
@@ -50,16 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // =========================
-    // PROFILE ICON
-    // =========================
-    const profileBtn = document.getElementById("profileBtn");
-
-    if (profileBtn) {
-    profileBtn.addEventListener("click", () => {
-        openModal();
-    });
-}
+});
 
 
 // =========================
@@ -98,6 +100,7 @@ function openModal() {
 function closeModal() {
     document.getElementById('signupModal').style.display = 'none';
     document.body.style.overflow = '';
+
     document.querySelectorAll('.goal-btn.selected')
         .forEach(b => b.classList.remove('selected'));
 }
@@ -200,9 +203,7 @@ function toggleGoal(btn) {
 // =========================
 // SIGNUP
 // =========================
-
 async function submitSignup() {
-      alert("submitSignup running");
     const selectedGoals = [...document.querySelectorAll('.goal-btn.selected')]
         .map(btn => btn.dataset.value);
 
@@ -219,13 +220,10 @@ async function submitSignup() {
         goals: selectedGoals
     };
 
-    // ✅ MOVE UI FIRST (NO MORE FREEZE)
     switchStep("step3", "step4");
 
-    // save locally
     localStorage.setItem("user", JSON.stringify(user));
 
-    //  RUN BACKEND IN BACKGROUND
     try {
         await fetch("http://localhost:5000/api/auth/signup", {
             method: "POST",
@@ -233,10 +231,9 @@ async function submitSignup() {
             body: JSON.stringify(user)
         });
     } catch (err) {
-        console.warn("Signup API failed (ignored for now)");
+        console.warn("Signup API failed (ignored)");
     }
 
-    // 🔥 CALL HEALTH API
     try {
         const age = document.getElementById("mAge").value;
         const height = document.getElementById("mHeightFt").value * 30.48;
@@ -257,7 +254,6 @@ async function submitSignup() {
         });
 
         const healthData = await res2.json();
-
         showResultModal(healthData);
 
     } catch (err) {
@@ -289,7 +285,7 @@ async function handleSignIn() {
 
         if (res.ok) {
             localStorage.setItem("user", JSON.stringify(data.user));
-            window.location.href = "profile.html";
+            window.location.href = "userProfile.html";
         } else {
             alert("Invalid credentials");
         }
@@ -297,16 +293,16 @@ async function handleSignIn() {
         alert("Server error");
         console.error(err);
     }
-}  // ← closes handleSignIn here
+}
 
-// showSignIn is NOW outside
 function showSignIn() {
     switchStep("step0", "step4");
 }
-// ==========================
-// Result Modal after step 4
-// 🔥 ADD THIS HERE
-// ==========================
+
+
+// =========================
+// RESULT MODAL
+// =========================
 function showResultModal(data) {
     const calories = data.recommendedCalories;
 
@@ -323,5 +319,3 @@ function showResultModal(data) {
 
     document.getElementById("resultModal").style.display = "block";
 }
-
-});
