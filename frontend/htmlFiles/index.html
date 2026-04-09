@@ -7,6 +7,93 @@
     <link rel="stylesheet" href="../cssFiles/main.css">
     
 </head>
+<script src="../jsFiles/script.js"></script>
+<script>
+// Fallback in case script.js fails to load
+if (typeof openModal === 'undefined') {
+    function openModal() {
+        document.getElementById('signupModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        document.querySelectorAll('.modal-step').forEach(step => {
+            step.classList.remove('modal-step-active');
+            step.classList.add('modal-step-hidden');
+        });
+        document.getElementById('step0').classList.remove('modal-step-hidden');
+        document.getElementById('step0').classList.add('modal-step-active');
+    }
+
+    function closeModal() {
+        document.getElementById('signupModal').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    function switchStep(current, next) {
+        document.getElementById(current).classList.add('modal-step-hidden');
+        document.getElementById(current).classList.remove('modal-step-active');
+        document.getElementById(next).classList.remove('modal-step-hidden');
+        document.getElementById(next).classList.add('modal-step-active');
+    }
+
+    function showSignIn() { switchStep('step0', 'step4'); }
+    function goBackToAuth() { switchStep('step1', 'step0'); }
+    function goBackToStep1() { switchStep('step2', 'step1'); }
+    function goBackToStep2() { switchStep('step3', 'step2'); }
+    function togglePassword() {
+        const input = document.getElementById('authPassword');
+        input.type = input.type === 'password' ? 'text' : 'password';
+    }
+    function toggleGoal(btn) {
+        const selected = document.querySelectorAll('.goal-btn.selected');
+        if (!btn.classList.contains('selected') && selected.length >= 3) {
+            alert('You can only pick up to 3 goals.'); return;
+        }
+        btn.classList.toggle('selected');
+    }
+    function goToStep1FromAuth() {
+        const email = document.getElementById('authEmail').value;
+        const password = document.getElementById('authPassword').value;
+        const terms = document.getElementById('authTerms').checked;
+        if (!email || !password) { alert('Please fill all fields.'); return; }
+        if (!terms) { alert('Please accept terms.'); return; }
+        switchStep('step0', 'step1');
+    }
+    function goToStep2() {
+        const firstName = document.getElementById('firstName').value;
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        if (!firstName || !username || !password || !confirmPassword) { alert('Please fill in all fields.'); return; }
+        if (password !== confirmPassword) { alert('Passwords do not match.'); return; }
+        switchStep('step1', 'step2');
+    }
+    function goToStep3() {
+        const age = document.getElementById('mAge').value;
+        const weight = document.getElementById('mWeight').value;
+        const activity = document.getElementById('mActivity').value;
+        if (!age || !weight || !activity) { alert('Please fill in all fields.'); return; }
+        switchStep('step2', 'step3');
+    }
+    async function submitSignup() {
+        const selected = document.querySelectorAll('.goal-btn.selected');
+        if (selected.length === 0) { alert('Please select at least one goal.'); return; }
+        switchStep('step3', 'step4');
+    }
+    async function handleSignIn() {
+        const username = document.getElementById('signInUsername').value;
+        const password = document.getElementById('signInPassword').value;
+        if (!username || !password) { alert('Please enter your username and password.'); return; }
+        alert(`Welcome back, ${username}! 🎉`);
+        closeModal();
+    }
+
+    document.getElementById('signupModal').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+    const profileBtn = document.getElementById('profileBtn');
+    if (profileBtn) profileBtn.addEventListener('click', () => openModal());
+}
+</script>
+</body>
 <body>
     <!-- Navigation -->
     <nav>
@@ -31,10 +118,9 @@
             <li><a href="#calculator">Try Now</a></li>
         </ul>
     <!--  User Profile Button  -->
-        <div class="profile-icon" id="profileBtn">
-           <img src="../assets/images/Userprofileicon.avif"  alt="profile" />
+        <div class="profile-icon" id="profileBtn" onclick="openModal()">
+            <img src="../assets/images/Userprofileicon.avif" alt="profile" />
         </div>
-    
     
     </nav>
 
