@@ -512,11 +512,21 @@
     </aside>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-// ── DATA FROM LOCALSTORAGE ──
+// ── SAFE DATA LOAD ──
+if (!localStorage.getItem("user")) {
+    window.location.href = "index.html";
+}
 const user = JSON.parse(localStorage.getItem('user') || '{}');
-const health = JSON.parse(localStorage.getItem('healthData') || '{}');
+const metrics = user.metrics || {};
+const health = user.health || {};
 
+console.log("USER:", user);
+console.log("METRICS:", metrics);
+console.log("HEALTH:", health);
+
+// ── LABELS ──
 const GOAL_LABELS = {
     fat_loss: 'Lose weight',
     maintain: 'Maintain weight',
@@ -536,13 +546,7 @@ const ACTIVITY_LABELS = {
     extra: 'Extra Active'
 };
 
-function calcBMI(weightLbs, heightFt, heightIn) {
-    const totalIn = (parseFloat(heightFt) * 12) + (parseFloat(heightIn) || 0);
-    const weightKg = parseFloat(weightLbs) * 0.453592;
-    const heightM = totalIn * 0.0254;
-    return heightM > 0 ? (weightKg / (heightM * heightM)).toFixed(1) : null;
-}
-
+// ── BMI LABEL ──
 function bmiLabel(bmi) {
     if (bmi < 18.5) return 'Underweight';
     if (bmi < 25) return 'Normal';
@@ -550,182 +554,144 @@ function bmiLabel(bmi) {
     return 'Obese';
 }
 
+// ── POPULATE UI ──
 function populate() {
-    // Name / avatar initials
+
+    // NAME
     const fullName = [user.firstName, user.lastName].filter(Boolean).join(' ') || 'User';
     const initials = (user.firstName?.[0] || '') + (user.lastName?.[0] || '');
-    document.getElementById('displayName').textContent = fullName;
+
+    const nameEl = document.getElementById('displayName');
+    if (nameEl) nameEl.textContent = fullName;
     document.getElementById('displayUsername').textContent =
-        '@' + (user.username || 'user') + ' · Member since 2026';
+        '@' + (user.username || 'user');
+
     document.getElementById('avatarDisplay').textContent = initials || '?';
 
-    // Goals tags + list
+    // GOALS
     const goals = user.goals || [];
     const tagsEl = document.getElementById('goalTags');
     const listEl = document.getElementById('goalsList');
+
     if (goals.length) {
         tagsEl.innerHTML = goals.map(g =>
             `<span class="tag">${GOAL_LABELS[g] || g}</span>`).join('');
+
         listEl.innerHTML = goals.map(g => `
             <div class="goal-item">
                 <div class="goal-dot"></div>
                 <div class="goal-text">${GOAL_LABELS[g] || g}</div>
                 <span class="goal-badge">Active</span>
             </div>`).join('');
-    } else {
-        tagsEl.innerHTML = '<span class="tag">No goals set</span>';
     }
 
     document.getElementById('statGoals').textContent = goals.length || '—';
-    document.getElementById('statActivity').textContent =
-        ACTIVITY_LABELS[user.mActivity || user.activityLevel] || '—';
 
-    // Info panel
-    document.getElementById('infoAge').textContent = user.mAge ? user.mAge + ' y.o.' : '—';
-    const ft = user.mHeightFt, inch = user.mHeightIn || 0;
-    document.getElementById('infoHeight').textContent = ft ? `${ft}ft ${inch}in` : '—';
-    document.getElementById('infoWeight').textContent = user.mWeight ? user.mWeight + ' lbs' : '—';
-    document.getElementById('infoGender').textContent =
-        user.mGender ? user.mGender.charAt(0).toUpperCase() + user.mGender.slice(1) : '—';
+    // ACTIVITY
+    document.getElementById('statActivity').textContent =
+        ACTIVITY_LABELS[metrics.activity] || '—';
+
+    // INFO PANEL
+    document.getElementById('infoAge').textContent =
+        metrics.age ? metrics.age + ' yrs' : '—';
+
+    document.getElementById('infoHeight').textContent =
+        metrics.heightFt ? metrics.heightFt + ' ft' : '—';
+
+    document.getElementById('infoWeight').textContent =
+        metrics.weight ? metrics.weight + ' kg' : '—';
 
     // BMI
-    if (user.mWeight && user.mHeightFt) {
-        const bmi = calcBMI(user.mWeight, user.mHeightFt, user.mHeightIn);
-        document.getElementById('statBMI').textContent = bmi;
-        document.getElementById('statBMILabel').textContent = bmiLabel(bmi);
+    if (health.bmi) {
+        document.getElementById('statBMI').textContent = health.bmi;
+        document.getElementById('statBMILabel').textContent = bmiLabel(health.bmi);
     }
 
-    // Calories & macros
-    const calories = health.recommendedCalories || (user.mAge ? estimateCalories() : null);
+    // CALORIES + MACROS
+    const calories = health.recommendedCalories;
+
     if (calories) {
         document.getElementById('statCalories').textContent = Math.round(calories);
+
         const p = Math.round(calories * 0.3 / 4);
         const c = Math.round(calories * 0.4 / 4);
         const f = Math.round(calories * 0.3 / 9);
+
         const max = Math.max(p, c, f);
+
         document.getElementById('macroProtein').textContent = p + 'g';
         document.getElementById('macroCarbs').textContent = c + 'g';
         document.getElementById('macroFats').textContent = f + 'g';
-        setTimeout(() => {
-            document.getElementById('barProtein').style.width = Math.round(p/max*100) + '%';
-            document.getElementById('barCarbs').style.width = Math.round(c/max*100) + '%';
-            document.getElementById('barFats').style.width = Math.round(f/max*100) + '%';
-        }, 300);
+
+        document.getElementById('barProtein').style.width = (p/max*100) + '%';
+        document.getElementById('barCarbs').style.width = (c/max*100) + '%';
+        document.getElementById('barFats').style.width = (f/max*100) + '%';
     }
 }
 
-function estimateCalories() {
-    const w = parseFloat(user.mWeight) * 0.453592;
-    const totalIn = (parseFloat(user.mHeightFt || 5) * 12) + parseFloat(user.mHeightIn || 6);
-    const h = totalIn * 2.54;
-    const a = parseFloat(user.mAge) || 25;
-    const bmr = user.mGender === 'female'
-        ? 447.593 + (9.247*w) + (3.098*h) - (4.330*a)
-        : 88.362 + (13.397*w) + (4.799*h) - (5.677*a);
-    const mult = {sedentary:1.2,light:1.375,moderate:1.55,very:1.725,extra:1.9};
-    const m = mult[user.mActivity] || 1.55;
-    const goal = (user.goals || [])[0];
-    const adj = goal === 'fat_loss' ? -500 : goal === 'weight_gain' || goal === 'muscle_gain' ? 300 : 0;
-    return Math.round(bmr * m + adj);
-}
-
-// ── CALORIE CHART ──
+// ── CHART ──
 let calorieChart;
-const weekData = {
-    labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
-    data: [1820, 2100, 1950, 2300, 2050, 1800, 2200]
-};
-const monthData = {
-    labels: ['W1','W2','W3','W4'],
-    data: [13800, 14200, 13500, 14800]
-};
 
-function buildCalorieChart(period) {
-    const d = period === 'week' ? weekData : monthData;
-    const ctx = document.getElementById('calorieChart').getContext('2d');
+function buildCalorieChart() {
+    const canvas = document.getElementById('calorieChart');
+      if (!canvas || typeof Chart === "undefined") return;
+
+    const ctx = canvas.getContext('2d');
+
     if (calorieChart) calorieChart.destroy();
+
     calorieChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: d.labels,
+            labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
             datasets: [{
-                data: d.data,
+                data: [1800,2100,2000,2300,2100,1900,2200],
                 borderColor: '#CCFF00',
-                backgroundColor: 'rgba(204,255,0,0.06)',
+                backgroundColor: 'rgba(204,255,0,0.1)',
                 fill: true,
-                tension: 0.4,
-                pointBackgroundColor: '#CCFF00',
-                pointRadius: 4,
-                pointHoverRadius: 6,
-                borderWidth: 2
+                tension: 0.4
             }]
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false }, tooltip: {
-                backgroundColor: '#1a1a1a',
-                titleColor: '#CCFF00',
-                bodyColor: '#fff',
-                borderColor: '#333',
-                borderWidth: 1
-            }},
-            scales: {
-                x: { grid: { color: '#1a1a1a' }, ticks: { color: '#666', font: { size: 11 } } },
-                y: { grid: { color: '#1a1a1a' }, ticks: { color: '#666', font: { size: 11 } } }
-            }
+            plugins: { legend: { display: false } }
         }
     });
 }
 
-function setChartPeriod(period, btn) {
-    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    buildCalorieChart(period);
-}
+// ── DONUT ──
+function buildDonutChart() {
+    const canvas = document.getElementById('donutChart');
+    if (!canvas) return;
 
-// ── DONUT CHART ──
-function buildDonutChart(done, total) {
-    const left = total - done;
-    document.getElementById('donutLabel').textContent = done + '/' + total;
-    document.getElementById('legendDone').textContent = done;
-    document.getElementById('legendLeft').textContent = left;
-    const ctx = document.getElementById('donutChart').getContext('2d');
+    const ctx = canvas.getContext('2d');
+
     new Chart(ctx, {
         type: 'doughnut',
         data: {
             datasets: [{
-                data: [done, left],
-                backgroundColor: ['#CCFF00', '#1e1e1e'],
-                borderWidth: 0,
-                hoverOffset: 3
+                data: [9, 12],
+                backgroundColor: ['#CCFF00', '#1e1e1e']
             }]
         },
         options: {
-            cutout: '72%',
-            responsive: false,
-            plugins: { legend: { display: false }, tooltip: { enabled: false } }
+            cutout: '70%',
+            plugins: { legend: { display: false } }
         }
     });
 }
 
+// ── LOGOUT ──
 function handleLogout() {
-    if (confirm('Are you sure you want to logout?')) {
-        localStorage.removeItem('user');
-        localStorage.removeItem('healthData');
-        window.location.href = 'index.html';
-    }
-}
-
-function openEditModal() {
-    alert('Edit profile — connect this to your existing modal or profile edit page.');
+    localStorage.removeItem('user');
+    window.location.href = 'index.html';
 }
 
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', () => {
     populate();
-    buildCalorieChart('week');
-    buildDonutChart(9, 21);
+    buildCalorieChart();
+    buildDonutChart();
 });
 </script>
 </body>

@@ -1,3 +1,16 @@
+
+let userData = {
+    email: "",
+    firstName: "",
+    lastName: "",
+    username: "",
+    password: "",
+    goals: [],
+    metrics: {}
+};
+
+
+
 // =========================
 // DOM READY (ONLY EVENTS HERE)
 // =========================
@@ -131,6 +144,8 @@ function goToStep1FromAuth() {
         alert("Please accept terms.");
         return;
     }
+    userData.email = email;
+    userData.password = password;
 
     const btn = document.querySelector("#step0 .btn-primary");
     btn.classList.add("btn-loading");
@@ -146,6 +161,10 @@ function goToStep2() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
+
+    userData.firstName = firstName;
+    userData.username = username;
+    userData.password = password;
 
     if (!firstName || !username || !password || !confirmPassword) {
         alert('Please fill in all fields.');
@@ -164,6 +183,13 @@ function goToStep3() {
     const heightFt = document.getElementById('mHeightFt').value;
     const weight = document.getElementById('mWeight').value;
     const activity = document.getElementById('mActivity').value;
+
+    userData.metrics = {
+    age,
+    heightFt,
+    weight,
+    activity
+};
 
     if (!age || !heightFt || !weight || !activity) {
         alert('Please fill in all required fields.');
@@ -212,55 +238,61 @@ async function submitSignup() {
         return;
     }
 
-    const user = {
-        firstName: document.getElementById("firstName").value,
-        lastName: document.getElementById("lastName")?.value || "",
-        username: document.getElementById("username").value,
-        password: document.getElementById("password").value,
-        goals: selectedGoals
-    };
+  const user = {
+    email: document.getElementById("authEmail").value,
+    firstName: document.getElementById("firstName").value,
+    lastName: document.getElementById("lastName")?.value || "",
+    username: document.getElementById("username").value,
+    password: document.getElementById("password").value,
 
-    switchStep("step3", "step4");
+    goals: selectedGoals, // array
 
-    localStorage.setItem("user", JSON.stringify(user));
+    metrics: {
+        age: document.getElementById("mAge").value,
+        heightFt: document.getElementById("mHeightFt").value,
+        weight: document.getElementById("mWeight").value,
+        activity: document.getElementById("mActivity").value
+    },
 
-    try {
-        await fetch("http://localhost:5000/api/auth/signup", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(user)
-        });
-    } catch (err) {
-        console.warn("Signup API failed (ignored)");
+    health: {
+        bmi: healthData.bmi,
+        tdee: healthData.tdee,
+        recommendedCalories: healthData.recommendedCalories
     }
+};
 
     try {
-        const age = document.getElementById("mAge").value;
-        const height = document.getElementById("mHeightFt").value * 30.48;
-        const weight = document.getElementById("mWeight").value;
-        const activityLevel = document.getElementById("mActivity").value;
-        const mainGoal = selectedGoals[0];
-
+        // 🔥 CALL HEALTH API FIRST
         const res2 = await fetch("http://localhost:5000/api/health", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                age,
-                height,
-                weight,
-                activityLevel,
-                goal: mainGoal
+                age: user.metrics.age,
+                height: user.metrics.heightFt * 30.48,
+                weight: user.metrics.weight,
+                activityLevel: user.metrics.activity,
+                goal: selectedGoals[0]
             })
         });
 
         const healthData = await res2.json();
-        showResultModal(healthData);
+
+        // 🔥 ATTACH HEALTH DATA
+        user.health = healthData;
+
+        // 🔥 SAVE EVERYTHING
+        localStorage.setItem("user", JSON.stringify(user));
+
+        console.log("FINAL USER:", user);
+
+        // 🔥 NOW REDIRECT
+        window.location.href = "userProfile.html";
 
     } catch (err) {
         console.error("Health API failed:", err);
+        alert("Something went wrong. Try again.");
     }
 }
-
 
 // =========================
 // LOGIN
