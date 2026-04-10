@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const goal = document.getElementById("goal").value;
 
             try {
-                const res = await fetch("http://localhost:5000/api/health", {
+               const res = await fetch("https://healthsync-backend-fleh.onrender.com/api/health", { 
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ age, height, weight, activityLevel, goal }),
@@ -254,16 +254,12 @@ async function submitSignup() {
         activity: document.getElementById("mActivity").value
     },
 
-    health: {
-        bmi: healthData.bmi,
-        tdee: healthData.tdee,
-        recommendedCalories: healthData.recommendedCalories
-    }
+   
 };
 
     try {
         // 🔥 CALL HEALTH API FIRST
-        const res2 = await fetch("http://localhost:5000/api/health", {
+        const res2 = await fetch("http://healthsync-backend-fleh.onrender.com/api/health", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -307,7 +303,7 @@ async function handleSignIn() {
     }
 
     try {
-        const res = await fetch("http://localhost:5000/api/auth/login", {
+        const res = await fetch("http://healthsync-backend-fleh.onrender.com/api/auth/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password })
