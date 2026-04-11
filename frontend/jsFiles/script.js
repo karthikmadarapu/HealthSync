@@ -282,7 +282,7 @@ async function submitSignup() {
         console.log("FINAL USER:", user);
 
         // 🔥 NOW REDIRECT
-        window.location.href = "userProfile.html";
+        window.location.href = "/htmlFiles/userProfile.html";
 
     } catch (err) {
         console.error("Health API failed:", err);
