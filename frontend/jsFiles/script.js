@@ -259,7 +259,7 @@ async function submitSignup() {
 
     try {
         // 🔥 CALL HEALTH API FIRST
-        const res2 = await fetch("http://healthsync-backend-fleh.onrender.com/api/health", {
+        const res2 = await fetch("https://healthsync-backend-fleh.onrender.com/api/health", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -303,7 +303,7 @@ async function handleSignIn() {
     }
 
     try {
-        const res = await fetch("http://healthsync-backend-fleh.onrender.com/api/auth/login", {
+        const res = await fetch("https://healthsync-backend-fleh.onrender.com/api/auth/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password })
