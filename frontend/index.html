@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthSync - Your Personal Fitness & Nutrition Planner</title>
+    <link rel="stylesheet" href="./cssFiles/main.css">
+    
+</head>
+
+<body>
+   
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <a href="index.html" class="logo-link">
+                <img src="./assets/images/sync.png" alt="HealthSync logo-icon"
+                width="30" height="30">
+                Health<span>Sync</span>
+            </a>
+        </div>
+        <input type="checkbox" id="menu-toggle-checkbox">
+        <label for="menu-toggle-checkbox" class="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </label>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="./htmlFiles/about.html">About</a></li>
+            <li><a href="./htmlFiles/features.html">Features</a></li>
+            <li><a href="./htmlFiles/benefits.html">Benefits</a></li>
+            <li><a href="#calculator">Try Now</a></li>
+        </ul>
+    <!--  User Profile Button  -->
+        <div class="profile-icon" id="profileBtn" onclick="openModal()">
+            <img src="./assets/images/Userprofileicon.avif" alt="profile" />
+        </div>
+    
+    </nav>
+
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Transform Your Health Journey</h1>
+            <p class="hero-subtitle">Plan your meals, workouts, and fitness goals with personalized guidance</p>
+            <p class="hero-description">No wearables, No subscriptions, No stress.</p>
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-primary" onclick="openModal(); return false;">Get Started</a>
+                <a href="features.html" class="btn btn-secondary">Learn How It Works</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <h3>100%</h3>
+                    <p>Free Forever</p>
+                </div>
+                <div class="stat-item">
+                    <h3>0</h3>
+                    <p>Equipment Needed</p>
+                </div>
+                <div class="stat-item">
+                    <h3>2 min</h3>
+                    <p>To Get Your Plan</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+     
+
+    <!-- Problem Statement -->
+    <section class="problem-section">
+        <div class="container">
+            <h2 class="section-title">Struggling to Stay Healthy in College?</h2>
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <img src="./assets/images/Problem/Problem.jpg">
+                    <h3>No Time</h3>
+                    <p>Busy schedules make it hard to plan meals and workouts consistently</p>
+                </div>
+                <div class="problem-card">
+                    <img src="./assets/images/Problem/PT-nutrition.jpg">
+                    <h3>Too Expensive</h3>
+                    <p>Personal trainers and nutritionists cost hundreds of dollars per month</p>
+                </div>
+                <div class="problem-card">
+                    <img src="./assets/images/Problem/Conflicting_advice.jpg">
+                    <h3>Confused</h3>
+                    <p>Conflicting advice makes it unclear what to eat and how to exercise</p>
+                </div>
+                <div class="problem-card">
+                    <img src="./assets/images/Problem/Device.jpg">
+                    <h3>Device Dependent</h3>
+                    <p>Most apps require expensive wearables or paid subscriptions</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution/Features Section -->
+   
+
+    <!-- Benefits Section -->
+    <section class="benefits" id="benefits">
+        <h2 class="section-title">Why Choose HealthSync?</h2>
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-content">
+                    <h3>💯 Completely Free</h3>
+                    <p>No hidden costs, no subscriptions, no credit card required. HealthSync is 100% free for all students and young adults.</p>
+                </div>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-content">
+                    <h3>🚫 No Wearables Needed</h3>
+                    <p>Unlike other fitness apps, HealthSync doesn't require expensive smartwatches or fitness trackers to work.</p>
+                </div>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-content">
+                    <h3>📚 Evidence-Based</h3>
+                    <p>All recommendations are based on proven nutritional science and fitness principles validated by experts.</p>
+                </div>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-content">
+                    <h3>⚡ Instant Results</h3>
+                    <p>Get your personalized plan in under 2 minutes. No waiting, no complicated setup.</p>
+                </div>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-content">
+                    <h3>🔒 Privacy First</h3>
+                    <p>Your data is never stored without consent. We respect your privacy and keep your information secure.</p>
+                </div>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-content">
+                    <h3>📱 Works Everywhere</h3>
+                    <p>Access HealthSync on your laptop, tablet, or phone - works on all modern web browsers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+  <div id="signupModal" class="modal-overlay" style="display:none;">
+    <div class="modal-box" style="position: relative;">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+
+        <div id="step0" class="modal-step modal-step-active">
+    <h2>Create your account</h2>
+    <p class="modal-subtitle">Step 0 of 4 — Login Portal</p>
+    <div class="modal-form">
+        <input type="email" id="authEmail" placeholder="Email address">
+        <div class="password-field">
+            <input type="password" id="authPassword" placeholder="Create a password">
+            <span onclick="togglePassword()">👁</span>
+        </div>
+        <p class="info-text">Must be at least 10 characters, no spaces.</p>
+        <div class="terms">
+            <input type="checkbox" id="authTerms">
+            <label for="authTerms">I agree to Terms & Conditions</label>
+        </div>
+        <button class="btn btn-primary btn-large" onclick="goToStep1FromAuth()" style="width:100%;">Continue</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button class="google-btn">🌐 Continue with Google</button>
+        <button class="facebook-btn">📘 Continue with Facebook</button>
+        <p class="already-user">Already have an account? <a href="#" onclick="showSignIn(); return false;">Sign in</a></p>
+    </div>
+  </div>
+
+        <!-- STEP 1 -->
+        <div id="step1" class="modal-step modal-step-hidden">
+            <button onclick="goBackToAuth()" class="back-btn">← Back</button>
+            <h2>Create Your Account</h2>
+            <p class="modal-subtitle">Step 1 of 4 — Account Info</p>
+            <div class="modal-form">
+                <div class="form-row">
+                    <input type="text" id="firstName" placeholder="First Name" required>
+                    <input type="text" id="lastName" placeholder="Last Name" required>
+                </div>
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+                <button class="btn btn-primary btn-large" onclick="goToStep2()">Continue →</button>
+            </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div id="step2" class="modal-step modal-step-hidden">
+            <h2>Your Fitness Profile</h2>
+            <p class="modal-subtitle">Step 2 of 4 — Personal Info</p>
+            <div class="modal-form">
+                <div class="form-row">
+                    <input type="number" id="mAge" placeholder="Age" min="13" max="100" required>
+                    <select id="mGender">
+                        <option value="">Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <input type="number" id="mHeightFt" placeholder="Height (ft)" min="1" max="8" required>
+                    <input type="number" id="mHeightIn" placeholder="Inches" min="0" max="11">
+                </div>
+                <input type="number" id="mWeight" placeholder="Weight (lbs)" required>
+                <select id="mActivity" required>
+                    <option value="">Activity Level</option>
+                    <option value="sedentary">Sedentary</option>
+                    <option value="light">Lightly Active</option>
+                    <option value="moderate">Moderately Active</option>
+                    <option value="very">Very Active</option>
+                    <option value="extra">Extra Active</option>
+                </select>
+                <div class="modal-buttons">
+                    <button class="btn btn-secondary" onclick="goBackToStep1()">← Back</button>
+                    <button class="btn btn-primary" onclick="goToStep3()">Continue →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div id="step3" class="modal-step modal-step-hidden">
+            <h2>Your Goals</h2>
+            <p class="modal-subtitle">Step 3 of 4 — Pick up to 3 goals</p>
+            <div class="goals-grid">
+                
+               <button class="goal-btn" onclick="toggleGoal(this)" data-value="fat_loss">Lose weight</button>
+
+                <button class="goal-btn" onclick="toggleGoal(this)" data-value="maintain">Maintain weight</button>
+
+                <button class="goal-btn" onclick="toggleGoal(this)" data-value="weight_gain">Gain weight</button>
+
+                <button class="goal-btn" onclick="toggleGoal(this)" data-value="muscle_gain">Gain muscle</button>
+
+                <button class="goal-btn" onclick="toggleGoal(this)" data-value="diet">Modify my diet</button>
+
+                <button class="goal-btn" onclick="toggleGoal(this)" data-value="stress">Manage stress</button>
+
+                <button class="goal-btn" onclick="toggleGoal(this)" data-value="steps">Increase step count</button>
+
+                <button class="goal-btn" onclick="toggleGoal(this)" data-value="endurance">Build endurance</button>
+
+            </div>
+            <div class="modal-buttons" style="margin-top: 1.5rem;">
+                <button class="btn btn-secondary" onclick="goBackToStep2()">← Back</button>
+                <button class="btn btn-primary" onclick="submitSignup()">Continue →</button>
+                 
+            </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div id="step4" class="modal-step modal-step-hidden">
+            <div style="text-align:center; margin-bottom: 1.5rem;">
+                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">💪</div>
+                <h2 style="color:#CCFF00; font-size:1.8rem;">Welcome to HealthSync!</h2>
+                <p class="modal-subtitle">Your account is ready. Sign in to get started.</p>
+            </div>
+            <div class="modal-form">
+                <input type="text" id="signInUsername" placeholder="Username">
+                <input type="password" id="signInPassword" placeholder="Password">
+                <button class="btn btn-primary btn-large" onclick="handleSignIn()" style="width:100%; margin-top:0.5rem;">Sign In</button>
+                <p style="text-align:center; color:#aaa; font-size:0.85rem;">
+                    Don't have an account?
+                    <a href="#" onclick="switchStep('step4','step0')" style="color:#CCFF00;">Sign up</a>
+                </p>
+            </div>
+        </div>
+
+    </div>
+  </div>
+
+
+
+   <!-- 🔥 RESULT MODAL -->
+  <div id="resultModal" class="modal">
+  <div class="modal-content">
+
+    <h2>Your Daily Plan 🔥</h2>
+
+    <div id="macroResults">
+      <!-- JS will inject data here -->
+    </div>
+
+    <div class="modal-buttons">
+      <button onclick="goToProfile()" class="btn-primary">
+        Go to Profile
+      </button>
+
+      <button onclick="goToMealPlan()" class="btn-secondary">
+        View Meal Plan
+      </button>
+    </div>
+
+    <span class="close-btn" onclick="closeModal()">×</span>
+
+  </div>
+    </div>
+
+
+
+    <!-- FAQ Section -->
+    <section class="faq">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3>Is HealthSync really free?</h3>
+                    <p>Yes! HealthSync is 100% free with no hidden costs, subscriptions, or premium features.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Do I need any special equipment?</h3>
+                    <p>No equipment required. Just access HealthSync through your web browser and you're ready to go.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>How accurate are the calculations?</h3>
+                    <p>We use scientifically validated formulas (Harris-Benedict, Mifflin-St Jeor) for BMR and calorie calculations.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Can I use this if I'm over 30?</h3>
+                    <p>While designed for ages 18-30, the system works for anyone. However, consult a doctor for personalized medical advice.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Is my data stored?</h3>
+                    <p>No. Your information is only used for calculations and is not stored without your explicit consent.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Do I need to download an app?</h3>
+                    <p>No downloads needed. HealthSync works directly in your web browser on any device.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="final-cta">
+        <div class="container">
+            <h2>Ready to Take Control of Your Health?</h2>
+            <p>Join thousands of students achieving their fitness goals with HealthSync</p>
+            <a href="#calculator" class="btn btn-primary btn-large">Get Your Free Plan Now</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <img src="./assets/images/sync.png" alt="HealthSync logo-icon"
+                width="30" height="30">
+                    <span class="logo-text">HealthSync</span>
+                </div>
+                <p>Empowering students and young adults to achieve their fitness goals through personalized, evidence-based planning.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="benefits.html">Benefits</a></li>
+                    <li><a href="#calculator">Get Started</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Project Info</h4>
+                <p><strong>Team:</strong> Healthy Will</p>
+                <p><strong>Course:</strong> COMP 2154</p>
+                <p><strong>Project:</strong> System Development</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2026 HealthSync by Healthy Will Team. All rights reserved.</p>
+            <p>Built for students, by students | Privacy-focused & Free Forever</p>
+        </div>
+    </footer>
+    <script src="./jsFiles/script.js"></script>
+</body>
+</html>
