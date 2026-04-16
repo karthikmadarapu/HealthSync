@@ -397,8 +397,8 @@ nav {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    border-top: 1px solid #333;
-    border-bottom: 1px solid #333;
+    border-top: 10px solid #CCFF00;
+    border-bottom: 1px solid #CCFF00;
 }
 
 .section-title {
@@ -719,7 +719,7 @@ nav {
     border-bottom: 1px solid #333;
 background: #0a0a0a;
 border-top: 1px solid #333;
-border-bottom: 1px solid #333;
+border-bottom: 10px solid #CCFF00;
 }
 
 .calculator-container {
@@ -1057,7 +1057,7 @@ margin-top: 1rem;
 padding: 5rem 5%;
 background: #111111;
 border-top: 1px solid #333;
-border-bottom: 1px solid #333;
+border-bottom: 10px solid #CCFF00;
 }
 
 .faq-grid {
