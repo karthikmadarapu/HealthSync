@@ -4,222 +4,821 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HealthSync - Profile</title>
-
-<link rel="stylesheet" href="../cssFiles/main.css">
-<link rel="stylesheet" href="../cssFiles/userProfile.css">
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<style>
+/* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --accent: #CCFF00;
+  --accent-dim: rgba(204,255,0,0.12);
+  --bg: #0a0a0a;
+  --bg1: #0d0d0d;
+  --bg2: #111111;
+  --bg3: #181818;
+  --border: #1f1f1f;
+  --border2: #2a2a2a;
+  --text: #eaeaea;
+  --muted: #777;
+  --muted2: #555;
+  --nav-h: 64px;
+  --sidebar-w: 220px;
+  --panel-w: 280px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* ── NAVBAR ── */
+.top-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  background: #000;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  z-index: 1000;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.logo-icon {
+  width: 26px;
+  height: 26px;
+  /* Sync icon replacement using CSS */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 20px;
+}
+
+.logo-text {
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.3px;
+  color: var(--text);
+}
+.logo-text span { color: var(--accent); }
+
+.nav-center {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-center a {
+  color: #888;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 8px;
+  transition: color 0.15s, background 0.15s;
+  position: relative;
+}
+
+.nav-center a:hover { color: #fff; background: rgba(255,255,255,0.05); }
+
+.nav-center a.active {
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.nav-right {
+  flex-shrink: 0;
+}
+
+.user-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  background: var(--bg2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--accent);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.user-icon:hover { transform: scale(1.05); }
+
+/* ── LAYOUT ── */
+.page-wrapper {
+  margin-top: var(--nav-h);
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr var(--panel-w);
+  min-height: calc(100vh - var(--nav-h));
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  background: var(--bg1);
+  border-right: 1px solid var(--border);
+  padding: 20px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: sticky;
+  top: var(--nav-h);
+  height: calc(100vh - var(--nav-h));
+  overflow-y: auto;
+}
+
+.sidebar-nav { display: flex; flex-direction: column; gap: 4px; }
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: #888;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+}
+
+.sidebar-nav a .icon { font-size: 16px; flex-shrink: 0; }
+
+.sidebar-nav a:hover { background: rgba(255,255,255,0.05); color: #fff; }
+
+.sidebar-nav a.active {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+.sidebar-logout a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: #555;
+  font-size: 13px;
+  transition: color 0.15s, background 0.15s;
+}
+.sidebar-logout a:hover { color: #ff5555; background: rgba(255,85,85,0.08); }
+
+/* ── MAIN ── */
+.main-content {
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  overflow-y: auto;
+}
+
+/* ── PROFILE HEADER ── */
+.profile-header {
+  background: linear-gradient(135deg, #111 0%, #161616 100%);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.profile-header:hover {
+  border-color: var(--border2);
+  transform: translateY(-2px);
+}
+
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2.5px solid var(--accent);
+  background: var(--bg2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  flex-shrink: 0;
+  box-shadow: 0 0 16px rgba(204,255,0,0.2);
+}
+
+.profile-header h2 {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+}
+.profile-header p {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+/* ── STATS ROW ── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.stat-card {
+  background: linear-gradient(145deg, #111, #161616);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.stat-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(204,255,0,0.12);
+}
+
+.stat-card .label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--muted);
+}
+
+.stat-card .value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.stat-card .sublabel {
+  font-size: 11px;
+  color: var(--muted2);
+}
+
+/* ── CHART CARD ── */
+.chart-card {
+  background: linear-gradient(145deg, #111, #161616);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.chart-card:hover {
+  border-color: var(--border2);
+  transform: translateY(-2px);
+}
+
+.chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.chart-header h3 {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+.chart-toggle {
+  display: flex;
+  gap: 4px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.chart-toggle button {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  font-family: inherit;
+}
+.chart-toggle button.active {
+  background: var(--accent);
+  color: #000;
+}
+.chart-toggle button:hover:not(.active) { color: #fff; }
+
+/* ── RIGHT PANEL ── */
+.right-panel {
+  background: var(--bg1);
+  border-left: 1px solid var(--border);
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  position: sticky;
+  top: var(--nav-h);
+  height: calc(100vh - var(--nav-h));
+  overflow-y: auto;
+}
+
+.panel-section-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+/* Info Card */
+.info-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+}
+.info-row:last-child { border-bottom: none; }
+
+.info-row .key { color: var(--muted); font-size: 12px; }
+.info-row .val { font-size: 13px; font-weight: 600; color: var(--text); }
+
+/* Donut Card */
+.donut-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.donut-wrapper {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  margin: 14px auto 12px;
+}
+
+.donut-wrapper canvas {
+  width: 130px !important;
+  height: 130px !important;
+}
+
+.donut-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.donut-count {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+
+.donut-label {
+  font-size: 10px;
+  color: var(--muted);
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.legend-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 7px;
+}
+
+.legend-key { font-size: 11px; color: var(--muted); display: flex; align-items: center; }
+.legend-val { font-size: 12px; font-weight: 600; }
+
+/* Macros Card */
+.macros-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.macro-row {
+  margin-bottom: 14px;
+}
+.macro-row:last-child { margin-bottom: 0; }
+
+.macro-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.macro-top .name { font-size: 11px; color: var(--muted); }
+.macro-top .amount { font-size: 12px; font-weight: 600; }
+
+.macro-bar-bg {
+  height: 5px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.macro-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--accent);
+  transition: width 0.8s ease;
+}
+.macro-bar-fill.carbs { background: #4dd0e1; }
+.macro-bar-fill.fat   { background: #ff9800; }
+</style>
 </head>
 
 <body>
 
 <!-- NAV -->
 <nav class="top-nav">
-    
-    <div class="nav-left">
-        <img src="../assets/images/sync.png" class="logo-icon">
-        <span class="logo-text">Health<span>Sync</span></span>
-    </div>
+  <div class="nav-left">
+    <div class="logo-icon">↻</div>
+    <span class="logo-text">Health<span>Sync</span></span>
+  </div>
 
-    <div class="nav-center">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="features.html">Features</a>
-        <a href="benefits.html">Benefits</a>
-        <a href="profile.html" class="active">Profile</a>
-    </div>
+  <div class="nav-center">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="features.html">Features</a>
+    <a href="benefits.html">Benefits</a>
+    <a href="profile.html" class="active">Profile</a>
+  </div>
 
-    <div class="nav-right">
-        <img src="../assets/images/Userprofileicon.avif" class="user-icon">
-    </div>
-
+  <div class="nav-right">
+    <div class="user-icon" id="navAvatar">?</div>
+  </div>
 </nav>
 
 <div class="page-wrapper">
 
-<!-- SIDEBAR -->
-<aside class="sidebar">
-    <nav>
-        <a href="profile.html" class="active">👤 Profile</a>
-        <a href="workout.html">⚡ Workout</a>
-        <a href="nutrition.html">🥗 Nutrition</a>
-        <a href="mealplan.html">📋 Meal Plan</a>
-        <a href="progress.html">📈 Progress</a>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <nav class="sidebar-nav">
+      <a href="profile.html" class="active">
+        <span class="icon">👤</span> Profile
+      </a>
+      <a href="workout.html">
+        <span class="icon">⚡</span> Workout
+      </a>
+      <a href="nutrition.html">
+        <span class="icon">🥗</span> Nutrition
+      </a>
+      <a href="mealplan.html">
+        <span class="icon">📋</span> Meal Plan
+      </a>
+      <a href="progress.html">
+        <span class="icon">📈</span> Progress
+      </a>
     </nav>
 
-    <div class="logout">
-        <a href="#" onclick="handleLogout()">🚪 Logout</a>
+    <div class="sidebar-logout">
+      <a href="#" onclick="handleLogout()">
+        <span class="icon">🚪</span> Logout
+      </a>
     </div>
-</aside>
+  </aside>
 
-<!-- MAIN -->
-<main class="main-content">
+  <!-- MAIN -->
+  <main class="main-content">
 
-<div class="profile-header">
-    <div class="avatar" id="avatarDisplay">?</div>
-    <div>
+    <!-- Profile Header -->
+    <div class="profile-header">
+      <div class="avatar" id="avatarDisplay">?</div>
+      <div>
         <h2 id="displayName">User</h2>
         <p id="displayUsername">@username</p>
-    </div>
-</div>
-
-<div class="stats-row">
-
-    <div class="stat-card">
-        <p>Daily Calories</p>
-        <h2 id="statCalories">—</h2>
+      </div>
     </div>
 
-    <div class="stat-card">
-        <p>BMI</p>
-        <h2 id="statBMI">—</h2>
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="label">Daily Calories</div>
+        <div class="value" id="statCalories">—</div>
+        <div class="sublabel">kcal target</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">BMI</div>
+        <div class="value" id="statBMI">—</div>
+        <div class="sublabel" id="statBMILabel">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Activity Level</div>
+        <div class="value" id="statActivity" style="font-size:20px">—</div>
+        <div class="sublabel">current level</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Goals Set</div>
+        <div class="value" id="statGoals">—</div>
+        <div class="sublabel">active targets</div>
+      </div>
     </div>
 
-    <div class="stat-card">
-        <p>Activity</p>
-        <h2 id="statActivity">—</h2>
-    </div>
-
-    <div class="stat-card">
-        <p>Goals</p>
-        <h2 id="statGoals">—</h2>
-    </div>
-
-</div>
-
-<div class="card">
-    <h3>Calorie Overview</h3>
-    <canvas id="calorieChart"></canvas>
-</div>
-
-</main>
-
-<!-- RIGHT PANEL -->
-<aside class="right-panel">
-
-<div class="card">
-    <h4>Information</h4>
-    <p>Age: <span id="infoAge">—</span></p>
-    <p>Height: <span id="infoHeight">—</span></p>
-    <p>Weight: <span id="infoWeight">—</span></p>
-</div>
-
-<div class="card donut-card">
-    <h4>Workouts</h4>
-
-    <div class="donut-wrapper">
-        <canvas id="donutChart"></canvas>
-        <div class="donut-center">
-              9/21
-         <div class="donut-label">Workouts</div>
+    <!-- Calorie Chart -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Calorie Overview</h3>
+        <div class="chart-toggle">
+          <button class="active" id="btnWeekly" onclick="setChartMode('weekly')">Weekly</button>
+          <button id="btnMonthly" onclick="setChartMode('monthly')">Monthly</button>
         </div>
+      </div>
+      <canvas id="calorieChart" height="100"></canvas>
     </div>
 
-</div>
+  </main>
 
-</aside>
+  <!-- RIGHT PANEL -->
+  <aside class="right-panel">
+
+    <!-- Information -->
+    <div>
+      <div class="panel-section-title">Information</div>
+      <div class="info-card">
+        <div class="info-row">
+          <span class="key">Age</span>
+          <span class="val" id="infoAge">—</span>
+        </div>
+        <div class="info-row">
+          <span class="key">Height</span>
+          <span class="val" id="infoHeight">—</span>
+        </div>
+        <div class="info-row">
+          <span class="key">Weight</span>
+          <span class="val" id="infoWeight">—</span>
+        </div>
+        <div class="info-row">
+          <span class="key">Gender</span>
+          <span class="val" id="infoGender">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Monthly Workouts -->
+    <div>
+      <div class="panel-section-title">Monthly Workouts</div>
+      <div class="donut-card">
+        <div class="donut-wrapper">
+          <canvas id="donutChart"></canvas>
+          <div class="donut-center">
+            <div class="donut-count" id="donutCount">0/0</div>
+            <div class="donut-label">done</div>
+          </div>
+        </div>
+        <div class="donut-legend">
+          <div class="legend-row">
+            <span class="legend-key">
+              <span class="legend-dot" style="background:var(--accent)"></span>Completed
+            </span>
+            <span class="legend-val" id="legendCompleted">0</span>
+          </div>
+          <div class="legend-row">
+            <span class="legend-key">
+              <span class="legend-dot" style="background:#2a2a2a"></span>Remaining
+            </span>
+            <span class="legend-val" id="legendRemaining">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Daily Macros -->
+    <div>
+      <div class="panel-section-title">Daily Macros</div>
+      <div class="macros-card">
+        <div class="macro-row">
+          <div class="macro-top">
+            <span class="name">Protein</span>
+            <span class="amount" id="macroProtein">—</span>
+          </div>
+          <div class="macro-bar-bg">
+            <div class="macro-bar-fill" id="macroProteinBar" style="width:0%"></div>
+          </div>
+        </div>
+        <div class="macro-row">
+          <div class="macro-top">
+            <span class="name">Carbs</span>
+            <span class="amount" id="macroCarbs">—</span>
+          </div>
+          <div class="macro-bar-bg">
+            <div class="macro-bar-fill carbs" id="macroCarbsBar" style="width:0%"></div>
+          </div>
+        </div>
+        <div class="macro-row">
+          <div class="macro-top">
+            <span class="name">Fat</span>
+            <span class="amount" id="macroFat">—</span>
+          </div>
+          <div class="macro-bar-bg">
+            <div class="macro-bar-fill fat" id="macroFatBar" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </aside>
 
 </div>
 
 <script>
+// ── DATA ──
+const user     = JSON.parse(localStorage.getItem('user') || '{}');
+const metrics  = user.metrics  || {};
+const health   = user.health   || {};
+const workout  = user.workout  || {};
+const macros   = user.macros   || health.macros || {};
 
-// DATA LOAD
-const user = JSON.parse(localStorage.getItem('user') || '{}');
-const metrics = user.metrics || {};
-const health = user.health || {};
+// ── BMI LABEL ──
+function getBMILabel(bmi) {
+  if (!bmi || bmi === '—') return '—';
+  const b = parseFloat(bmi);
+  if (b < 18.5) return 'Underweight';
+  if (b < 25)   return 'Normal';
+  if (b < 30)   return 'Overweight';
+  return 'Obese';
+}
 
-// POPULATE
-document.getElementById('displayName').textContent =
-    user.firstName || "User";
+// ── POPULATE ──
+const firstName = user.firstName || 'User';
+const lastName  = user.lastName  || '';
+const initials  = (firstName[0] || '?') + (lastName[0] || '');
 
-document.getElementById('displayUsername').textContent =
-    '@' + (user.username || 'user');
+document.getElementById('avatarDisplay').textContent = initials;
+document.getElementById('navAvatar').textContent     = initials;
+document.getElementById('displayName').textContent   = firstName + (lastName ? ' ' + lastName : '');
+document.getElementById('displayUsername').textContent = '@' + (user.username || 'user');
 
-document.getElementById('avatarDisplay').textContent =
-    (user.firstName?.[0] || '?');
+const cal = health.recommendedCalories ? Math.round(health.recommendedCalories) : null;
+document.getElementById('statCalories').textContent = cal || '—';
 
-document.getElementById('statGoals').textContent =
-    user.goals?.length || '—';
+const bmi = health.bmi || null;
+document.getElementById('statBMI').textContent = bmi || '—';
+document.getElementById('statBMILabel').textContent = getBMILabel(bmi);
 
-document.getElementById('statActivity').textContent =
-    metrics.activity || '—';
+const activity = metrics.activity || health.activity || null;
+document.getElementById('statActivity').textContent = activity
+  ? activity.charAt(0).toUpperCase() + activity.slice(1) : '—';
 
- document.getElementById('statCalories').textContent =
-health.recommendedCalories ? Math.round(health.recommendedCalories) : "—";
+document.getElementById('statGoals').textContent = user.goals?.length || '0';
 
-document.getElementById('statBMI').textContent =
-    health.bmi || "—";
+document.getElementById('infoAge').textContent    = metrics.age    ? metrics.age + ' yrs'    : '—';
+document.getElementById('infoHeight').textContent = metrics.heightFt ? metrics.heightFt + ' ft' : (metrics.height || '—');
+document.getElementById('infoWeight').textContent = metrics.weight  ? metrics.weight + ' kg'  : '—';
+document.getElementById('infoGender').textContent = metrics.gender
+  ? metrics.gender.charAt(0).toUpperCase() + metrics.gender.slice(1) : '—';
 
-document.getElementById('infoAge').textContent =
-    metrics.age || '—';
+// ── WORKOUTS ──
+const completed = workout.completed || 0;
+const total     = workout.total     || 0;
+document.getElementById('donutCount').textContent     = completed + '/' + total;
+document.getElementById('legendCompleted').textContent = completed;
+document.getElementById('legendRemaining').textContent = Math.max(0, total - completed);
 
-document.getElementById('infoHeight').textContent =
-    metrics.heightFt || '—';
+// ── MACROS ──
+const protein = macros.protein || health.protein || 0;
+const carbs   = macros.carbs   || health.carbs   || 0;
+const fat     = macros.fat     || health.fat     || 0;
+const maxMacro = Math.max(protein, carbs, fat, 1);
 
-document.getElementById('infoWeight').textContent =
-    metrics.weight || '—';
+document.getElementById('macroProtein').textContent = protein ? protein + 'g' : '—';
+document.getElementById('macroCarbs').textContent   = carbs   ? carbs   + 'g' : '—';
+document.getElementById('macroFat').textContent     = fat     ? fat     + 'g' : '—';
 
-// CHARTS
-new Chart(document.getElementById('calorieChart'), {
-    type: 'line',
-    data: {
-        labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
-        datasets: [{
-            label: "Calories",
-            data: [1800,2100,2000,2300,2100,1900,2200],
-            borderColor: '#CCFF00',
-            backgroundColor: 'rgba(204,255,0,0.1)',
-            fill: true,
-            tension: 0.4
-        }]
-    },
-   options: {
+setTimeout(() => {
+  document.getElementById('macroProteinBar').style.width = (protein / maxMacro * 100) + '%';
+  document.getElementById('macroCarbsBar').style.width   = (carbs   / maxMacro * 100) + '%';
+  document.getElementById('macroFatBar').style.width     = (fat     / maxMacro * 100) + '%';
+}, 100);
+
+// ── LINE CHART ──
+const weeklyData  = { labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], data: [1800,2100,2000,2300,2100,1900,2200] };
+const monthlyData = {
+  labels: ['W1','W2','W3','W4'],
+  data: [14200, 15400, 13900, 15800]
+};
+
+let currentMode = 'weekly';
+
+const lineCtx = document.getElementById('calorieChart');
+const lineChart = new Chart(lineCtx, {
+  type: 'line',
+  data: {
+    labels: weeklyData.labels,
+    datasets: [{
+      label: 'Calories',
+      data: weeklyData.data,
+      borderColor: '#CCFF00',
+      backgroundColor: 'rgba(204,255,0,0.08)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#CCFF00',
+      pointRadius: 4,
+      pointHoverRadius: 6,
+      borderWidth: 2
+    }]
+  },
+  options: {
     responsive: true,
-    plugins: {
-        legend: { display: false }
-    },
+    interaction: { intersect: false, mode: 'index' },
+    plugins: { legend: { display: false }, tooltip: {
+      backgroundColor: '#111',
+      borderColor: '#2a2a2a',
+      borderWidth: 1,
+      titleColor: '#888',
+      bodyColor: '#CCFF00',
+      padding: 10
+    }},
     scales: {
-        x: {
-            ticks: { color: "#888" },
-            grid: { display: false }
-        },
-        y: {
-            ticks: { color: "#666" },
-            grid: { color: "#1a1a1a" }
-        }
+      x: { ticks: { color: '#555', font: { size: 11 } }, grid: { display: false } },
+      y: { ticks: { color: '#555', font: { size: 11 } }, grid: { color: '#161616' } }
     }
-}
+  }
 });
 
-// DOUGHNUT 
+function setChartMode(mode) {
+  currentMode = mode;
+  const d = mode === 'weekly' ? weeklyData : monthlyData;
+  lineChart.data.labels   = d.labels;
+  lineChart.data.datasets[0].data = d.data;
+  lineChart.update();
+  document.getElementById('btnWeekly').classList.toggle('active', mode === 'weekly');
+  document.getElementById('btnMonthly').classList.toggle('active', mode === 'monthly');
+}
 
+// ── DONUT ──
 new Chart(document.getElementById('donutChart'), {
-    type: 'doughnut',
-    data: {
-        datasets: [{
-            data: [9, 12],
-            backgroundColor: ['#CCFF00', '#1e1e1e'],
-            borderWidth: 2
-        }]
-    },
-         options: {
-    cutout: '70%',
-    animation: {
-        animateRotate: true,
-        duration: 1200
-    },
-    plugins: {
-        legend: { display: false }
-    }
-    }
+  type: 'doughnut',
+  data: {
+    datasets: [{
+      data: [Math.max(completed, 0.01), Math.max(total - completed, 0)],
+      backgroundColor: ['#CCFF00', '#1e1e1e'],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    cutout: '72%',
+    animation: { animateRotate: true, duration: 1200 },
+    plugins: { legend: { display: false }, tooltip: { enabled: false } }
+  }
 });
 
-// LOGOUT
+// ── LOGOUT ──
 function handleLogout() {
-    localStorage.removeItem('user');
-    window.location.href = 'index.html';
+  localStorage.removeItem('user');
+  window.location.href = 'index.html';
 }
-
 </script>
 
 </body>

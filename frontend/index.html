@@ -188,39 +188,71 @@
             </div>
         </div>
 
-        <!-- STEP 2 -->
-        <div id="step2" class="modal-step modal-step-hidden">
-            <h2>Your Fitness Profile</h2>
-            <p class="modal-subtitle">Step 2 of 4 — Personal Info</p>
-            <div class="modal-form">
-                <div class="form-row">
-                    <input type="number" id="mAge" placeholder="Age" min="13" max="100" required>
-                    <select id="mGender">
-                        <option value="">Gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div class="form-row">
-                    <input type="number" id="mHeightFt" placeholder="Height (ft)" min="1" max="8" required>
-                    <input type="number" id="mHeightIn" placeholder="Inches" min="0" max="11">
-                </div>
-                <input type="number" id="mWeight" placeholder="Weight (lbs)" required>
-                <select id="mActivity" required>
-                    <option value="">Activity Level</option>
-                    <option value="sedentary">Sedentary</option>
-                    <option value="light">Lightly Active</option>
-                    <option value="moderate">Moderately Active</option>
-                    <option value="very">Very Active</option>
-                    <option value="extra">Extra Active</option>
-                </select>
-                <div class="modal-buttons">
-                    <button class="btn btn-secondary" onclick="goBackToStep1()">← Back</button>
-                    <button class="btn btn-primary" onclick="goToStep3()">Continue →</button>
-                </div>
-            </div>
+    <!-- STEP 2  -->
+<div id="step2" class="modal-step modal-step-hidden">
+  <h2>Your Fitness Profile</h2>
+  <p class="modal-subtitle">Step 2 of 4 — Personal Info</p>
+  <div class="modal-form">
+
+    <!-- Age + Gender -->
+    <div class="form-row">
+      <input type="number" id="mAge" placeholder="Age" min="13" max="100" required>
+      <select id="mGender">
+        <option value="">Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+
+    <!-- HEIGHT with toggle -->
+    <div class="unit-field-group">
+      <div class="unit-toggle-row">
+        <span class="unit-field-label">Height</span>
+        <div class="unit-toggle">
+          <button type="button" class="unit-btn active" id="heightFtBtn" onclick="setHeightUnit('ft')">ft</button>
+          <button type="button" class="unit-btn" id="heightCmBtn" onclick="setHeightUnit('cm')">cm</button>
         </div>
+      </div>
+      <!-- ft+in view -->
+      <div class="form-row" id="heightFtFields">
+        <input type="number" id="mHeightFt" placeholder="Height (ft)" min="1" max="8">
+        <input type="number" id="mHeightIn" placeholder="Inches" min="0" max="11">
+      </div>
+      <!-- cm view -->
+      <div id="heightCmFields" style="display:none;">
+        <input type="number" id="mHeightCm" placeholder="Height (cm)" min="50" max="280" style="width:100%;">
+      </div>
+    </div>
+
+    <!-- WEIGHT with toggle -->
+    <div class="unit-field-group">
+      <div class="unit-toggle-row">
+        <span class="unit-field-label">Weight</span>
+        <div class="unit-toggle">
+          <button type="button" class="unit-btn active" id="weightLbsBtn" onclick="setWeightUnit('lbs')">lbs</button>
+          <button type="button" class="unit-btn" id="weightKgBtn" onclick="setWeightUnit('kg')">kg</button>
+        </div>
+      </div>
+      <input type="number" id="mWeight" placeholder="Weight (lbs)" min="1" required style="width:100%;">
+    </div>
+
+    <select id="mActivity" required>
+      <option value="">Activity Level</option>
+      <option value="sedentary">Sedentary</option>
+      <option value="light">Lightly Active</option>
+      <option value="moderate">Moderately Active</option>
+      <option value="very">Very Active</option>
+      <option value="extra">Extra Active</option>
+    </select>
+
+       <div class="modal-buttons">
+             <button class="btn btn-secondary" onclick="goBackToStep1()">← Back</button>
+             <button class="btn btn-primary" onclick="goToStep3()">Continue →</button>
+        </div>
+
+       </div>
+    </div>
 
         <!-- STEP 3 -->
         <div id="step3" class="modal-step modal-step-hidden">
