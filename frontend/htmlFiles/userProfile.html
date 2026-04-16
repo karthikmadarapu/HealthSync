@@ -1,698 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HealthSync - Profile</title>
-    <link rel="stylesheet" href="../cssFiles/main.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HealthSync - Profile</title>
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0a0a0a;
-            color: #fff;
-            overflow-x: hidden;
-        }
+<link rel="stylesheet" href="../cssFiles/main.css">
+<link rel="stylesheet" href="../cssFiles/userProfile.css">
 
-        /* ── NAV (same as main.css but self-contained for safety) ── */
-        nav {
-            position: fixed;
-            top: 0;
-            background: #000;
-            padding: 15px 40px;
-            width: 100%;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            border-bottom: 1px solid #1a1a1a;
-        }
-        .logo a {
-            color: #fff;
-            font-size: 1.8rem;
-            font-weight: 700;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .logo span { color: #CCFF00; }
-        .nav-links { display: flex; gap: 40px; list-style: none; }
-        .nav-links a { color: #fbfbfc; text-decoration: none; font-weight: 500; transition: color 0.3s; }
-        .nav-links a:hover, .nav-links a.active { color: #CCFF00; }
-        .nav-links a.active { position: relative; }
-        .nav-links a.active::after {
-            content: ''; position: absolute; width: 100%; height: 2px;
-            bottom: -5px; left: 0; background: #CCFF00;
-        }
-        .profile-icon {
-            width: 45px; height: 45px; border-radius: 50%;
-            overflow: hidden; cursor: pointer; border: 2px solid #CCFF00; transition: 0.3s;
-        }
-        .profile-icon img { width: 100%; height: 100%; object-fit: cover; }
-        .profile-icon:hover { transform: scale(1.1); box-shadow: 0 0 12px #CCFF00; }
-
-        /* ── PAGE LAYOUT ── */
-        .page-wrapper {
-            margin-top: 75px;
-            display: grid;
-            grid-template-columns: 280px 1fr 260px;
-            gap: 0;
-            min-height: calc(100vh - 75px);
-        }
-
-        /* ── LEFT SIDEBAR ── */
-        .sidebar {
-            background: #111;
-            border-right: 1px solid #1e1e1e;
-            padding: 2rem 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            position: sticky;
-            top: 75px;
-            height: calc(100vh - 75px);
-            overflow-y: auto;
-        }
-
-        .sidebar-nav { display: flex; flex-direction: column; gap: 4px; }
-        .sidebar-nav a {
-            display: flex; align-items: center; gap: 12px;
-            color: #888; text-decoration: none; padding: 10px 14px;
-            border-radius: 10px; font-size: 0.95rem; font-weight: 500;
-            transition: all 0.2s;
-        }
-        .sidebar-nav a:hover { background: #1a1a1a; color: #fff; }
-        .sidebar-nav a.active { background: rgba(204,255,0,0.1); color: #CCFF00; }
-        .sidebar-nav a .nav-icon {
-            width: 20px; height: 20px; display: flex;
-            align-items: center; justify-content: center; font-size: 16px;
-        }
-
-        .sidebar-divider { height: 1px; background: #1e1e1e; }
-
-        .sidebar-logout a {
-            display: flex; align-items: center; gap: 12px;
-            color: #555; text-decoration: none; padding: 10px 14px;
-            border-radius: 10px; font-size: 0.95rem; transition: all 0.2s;
-        }
-        .sidebar-logout a:hover { color: #ff6b6b; background: rgba(255,107,107,0.07); }
-
-        /* ── MAIN CONTENT ── */
-        .main-content {
-            padding: 2rem 2.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        /* Profile header */
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            padding: 1.5rem 2rem;
-            background: #111;
-            border: 1px solid #1e1e1e;
-            border-radius: 16px;
-        }
-        .avatar-wrapper { position: relative; }
-        .avatar {
-            width: 80px; height: 80px; border-radius: 50%;
-            border: 3px solid #CCFF00; object-fit: cover; display: block;
-            background: #222;
-        }
-        .avatar-placeholder {
-            width: 80px; height: 80px; border-radius: 50%;
-            border: 3px solid #CCFF00; background: #1a1a1a;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2rem; font-weight: 700; color: #CCFF00;
-        }
-        .online-dot {
-            position: absolute; bottom: 4px; right: 4px;
-            width: 14px; height: 14px; background: #CCFF00;
-            border-radius: 50%; border: 2px solid #111;
-        }
-        .profile-meta { flex: 1; }
-        .profile-meta h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 4px; }
-        .profile-meta p { color: #888; font-size: 0.9rem; margin-bottom: 12px; }
-        .profile-tags { display: flex; gap: 8px; flex-wrap: wrap; }
-        .tag {
-            background: rgba(204,255,0,0.1); color: #CCFF00;
-            padding: 4px 12px; border-radius: 20px; font-size: 0.78rem;
-            font-weight: 600; border: 1px solid rgba(204,255,0,0.2);
-        }
-        .edit-profile-btn {
-            background: transparent; color: #CCFF00;
-            border: 1.5px solid #CCFF00; padding: 10px 22px;
-            border-radius: 30px; font-size: 0.9rem; font-weight: 600;
-            cursor: pointer; transition: all 0.2s; text-decoration: none;
-            white-space: nowrap;
-        }
-        .edit-profile-btn:hover { background: #CCFF00; color: #000; }
-
-        /* Stats row */
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-        }
-        .stat-card {
-            background: #111;
-            border: 1px solid #1e1e1e;
-            border-radius: 12px;
-            padding: 1.2rem 1.4rem;
-            transition: border-color 0.2s, transform 0.2s;
-        }
-        .stat-card:hover { border-color: #CCFF00; transform: translateY(-2px); }
-        .stat-card .stat-label {
-            font-size: 0.75rem; color: #666; text-transform: uppercase;
-            letter-spacing: 0.08em; margin-bottom: 8px;
-        }
-        .stat-card .stat-value {
-            font-size: 1.6rem; font-weight: 700; color: #CCFF00; margin-bottom: 2px;
-        }
-        .stat-card .stat-unit { font-size: 0.8rem; color: #555; }
-
-        /* Calories chart */
-        .chart-card {
-            background: #111;
-            border: 1px solid #1e1e1e;
-            border-radius: 16px;
-            padding: 1.5rem 1.8rem;
-        }
-        .card-header {
-            display: flex; justify-content: space-between;
-            align-items: center; margin-bottom: 1.5rem;
-        }
-        .card-header h3 { font-size: 1.05rem; font-weight: 600; }
-        .period-toggle { display: flex; gap: 4px; }
-        .period-btn {
-            background: transparent; color: #666; border: 1px solid #333;
-            padding: 5px 14px; border-radius: 20px; font-size: 0.78rem;
-            cursor: pointer; transition: all 0.2s;
-        }
-        .period-btn.active { background: rgba(204,255,0,0.1); color: #CCFF00; border-color: #CCFF00; }
-        .period-btn:hover:not(.active) { color: #fff; border-color: #555; }
-        .chart-wrapper { height: 200px; position: relative; }
-
-        /* Goals section */
-        .goals-section {
-            background: #111;
-            border: 1px solid #1e1e1e;
-            border-radius: 16px;
-            padding: 1.5rem 1.8rem;
-        }
-        .goals-section h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 1.2rem; }
-        .goal-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 10px 0; border-bottom: 1px solid #1a1a1a;
-        }
-        .goal-item:last-child { border-bottom: none; }
-        .goal-dot {
-            width: 10px; height: 10px; border-radius: 50%;
-            background: #CCFF00; flex-shrink: 0;
-        }
-        .goal-dot.inactive { background: #333; }
-        .goal-text { flex: 1; font-size: 0.9rem; color: #ccc; }
-        .goal-badge {
-            font-size: 0.72rem; font-weight: 600; padding: 3px 10px;
-            border-radius: 12px; background: rgba(204,255,0,0.1);
-            color: #CCFF00; border: 1px solid rgba(204,255,0,0.2);
-        }
-
-        /* ── RIGHT PANEL ── */
-        .right-panel {
-            background: #111;
-            border-left: 1px solid #1e1e1e;
-            padding: 2rem 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            position: sticky;
-            top: 75px;
-            height: calc(100vh - 75px);
-            overflow-y: auto;
-        }
-
-        /* Info card */
-        .info-card h4 {
-            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em;
-            color: #555; margin-bottom: 1rem;
-        }
-        .info-row {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 8px 0; border-bottom: 1px solid #1a1a1a;
-            font-size: 0.88rem;
-        }
-        .info-row:last-child { border-bottom: none; }
-        .info-row .key { color: #666; }
-        .info-row .val { color: #fff; font-weight: 500; }
-
-        /* Donut chart */
-        .donut-card { text-align: center; }
-        .donut-card h4 {
-            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em;
-            color: #555; margin-bottom: 1.2rem; text-align: left;
-        }
-        .donut-wrapper { position: relative; width: 140px; height: 140px; margin: 0 auto 1rem; }
-        .donut-wrapper canvas { width: 140px !important; height: 140px !important; }
-        .donut-center {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            text-align: center;
-        }
-        .donut-center span { font-size: 1.4rem; font-weight: 700; color: #fff; display: block; }
-        .donut-center small { font-size: 0.7rem; color: #666; }
-        .donut-legend { display: flex; flex-direction: column; gap: 6px; }
-        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; }
-        .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-        .legend-item .legend-label { color: #888; flex: 1; }
-        .legend-item .legend-val { color: #fff; font-weight: 500; }
-
-        /* Macros mini-bars */
-        .macros-card h4 {
-            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em;
-            color: #555; margin-bottom: 1rem;
-        }
-        .macro-row { margin-bottom: 12px; }
-        .macro-label-row { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 0.82rem; }
-        .macro-label-row .mlabel { color: #888; }
-        .macro-label-row .mval { color: #fff; font-weight: 500; }
-        .macro-bar-bg { height: 5px; background: #1e1e1e; border-radius: 3px; overflow: hidden; }
-        .macro-bar { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
-
-        /* Responsive */
-        @media (max-width: 1100px) {
-            .page-wrapper { grid-template-columns: 240px 1fr; }
-            .right-panel { display: none; }
-            .stats-row { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (max-width: 768px) {
-            .page-wrapper { grid-template-columns: 1fr; }
-            .sidebar { display: none; }
-            nav { padding: 15px 20px; }
-            .nav-links { display: none; }
-            .main-content { padding: 1rem; }
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #0a0a0a; }
-        ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
-    </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
+
 <body>
 
 <!-- NAV -->
-<nav>
-    <div class="logo">
-        <a href="index.html">
-            <img src="../assets/images/sync.png" alt="HealthSync" width="30" height="30">
-            Health<span>Sync</span>
-        </a>
+<nav class="top-nav">
+    
+    <div class="nav-left">
+        <img src="../assets/images/sync.png" class="logo-icon">
+        <span class="logo-text">Health<span>Sync</span></span>
     </div>
-    <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="features.html">Features</a></li>
-        <li><a href="benefits.html">Benefits</a></li>
-        <li><a href="profile.html" class="active">Profile</a></li>
-    </ul>
-    <div class="profile-icon" id="profileBtn">
-        <img src="../assets/images/Userprofileicon.avif" alt="profile">
+
+    <div class="nav-center">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="features.html">Features</a>
+        <a href="benefits.html">Benefits</a>
+        <a href="profile.html" class="active">Profile</a>
     </div>
+
+    <div class="nav-right">
+        <img src="../assets/images/Userprofileicon.avif" class="user-icon">
+    </div>
+
 </nav>
 
-<!-- PAGE -->
 <div class="page-wrapper">
 
-    <!-- LEFT SIDEBAR -->
-    <aside class="sidebar">
-        <nav class="sidebar-nav">
-            <a href="index.html">
-                <span class="nav-icon">⌂</span> Home
-            </a>
-            <a href="profile.html" class="active">
-                <span class="nav-icon">◉</span> Profile
-            </a>
-            <a href="workout.html">
-                <span class="nav-icon">⚡</span> Workout
-            </a>
-            <a href="nutrition.html">
-                <span class="nav-icon">🥗</span> Nutrition
-            </a>
-            <a href="mealplan.html">
-                <span class="nav-icon">📋</span> Meal Plan
-            </a>
-            <a href="progress.html">
-                <span class="nav-icon">📈</span> Progress
-            </a>
-        </nav>
-        <div class="sidebar-divider"></div>
-        <div class="sidebar-logout">
-            <a href="#" onclick="handleLogout()">
-                <span class="nav-icon">↩</span> Logout
-            </a>
-        </div>
-    </aside>
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <nav>
+        <a href="profile.html" class="active">👤 Profile</a>
+        <a href="workout.html">⚡ Workout</a>
+        <a href="nutrition.html">🥗 Nutrition</a>
+        <a href="mealplan.html">📋 Meal Plan</a>
+        <a href="progress.html">📈 Progress</a>
+    </nav>
 
-    <!-- MAIN -->
-    <main class="main-content">
+    <div class="logout">
+        <a href="#" onclick="handleLogout()">🚪 Logout</a>
+    </div>
+</aside>
 
-        <!-- Profile header -->
-        <div class="profile-header">
-            <div class="avatar-wrapper">
-                <div class="avatar-placeholder" id="avatarDisplay">?</div>
-                <div class="online-dot"></div>
-            </div>
-            <div class="profile-meta">
-                <h2 id="displayName">Welcome back!</h2>
-                <p id="displayUsername">@username · Member since 2026</p>
-                <div class="profile-tags" id="goalTags">
-                    <span class="tag">Loading goals...</span>
-                </div>
-            </div>
-            <a href="#" class="edit-profile-btn" onclick="openEditModal()">Edit profile</a>
-        </div>
+<!-- MAIN -->
+<main class="main-content">
 
-        <!-- Stats row -->
-        <div class="stats-row">
-            <div class="stat-card">
-                <div class="stat-label">Daily Calories</div>
-                <div class="stat-value" id="statCalories">—</div>
-                <div class="stat-unit">kcal target</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">BMI</div>
-                <div class="stat-value" id="statBMI">—</div>
-                <div class="stat-unit" id="statBMILabel">—</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Activity Level</div>
-                <div class="stat-value" id="statActivity" style="font-size:1.1rem; padding-top:6px;">—</div>
-                <div class="stat-unit">current level</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Goals Set</div>
-                <div class="stat-value" id="statGoals">—</div>
-                <div class="stat-unit">active targets</div>
-            </div>
-        </div>
-
-        <!-- Calories chart -->
-        <div class="chart-card">
-            <div class="card-header">
-                <h3>Calorie Overview</h3>
-                <div class="period-toggle">
-                    <button class="period-btn active" onclick="setChartPeriod('week', this)">Weekly</button>
-                    <button class="period-btn" onclick="setChartPeriod('month', this)">Monthly</button>
-                </div>
-            </div>
-            <div class="chart-wrapper">
-                <canvas id="calorieChart"></canvas>
-            </div>
-        </div>
-
-        <!-- Goals -->
-        <div class="goals-section">
-            <h3>Your goals</h3>
-            <div id="goalsList">
-                <div class="goal-item">
-                    <div class="goal-dot inactive"></div>
-                    <div class="goal-text">No goals set yet — complete your profile setup</div>
-                </div>
-            </div>
-        </div>
-
-    </main>
-
-    <!-- RIGHT PANEL -->
-    <aside class="right-panel">
-
-        <!-- Personal info -->
-        <div class="info-card">
-            <h4>Information</h4>
-            <div class="info-row">
-                <span class="key">Age</span>
-                <span class="val" id="infoAge">—</span>
-            </div>
-            <div class="info-row">
-                <span class="key">Height</span>
-                <span class="val" id="infoHeight">—</span>
-            </div>
-            <div class="info-row">
-                <span class="key">Weight</span>
-                <span class="val" id="infoWeight">—</span>
-            </div>
-            <div class="info-row">
-                <span class="key">Gender</span>
-                <span class="val" id="infoGender">—</span>
-            </div>
-        </div>
-
-        <!-- Workout completion donut -->
-        <div class="donut-card">
-            <h4>Monthly workouts</h4>
-            <div class="donut-wrapper">
-                <canvas id="donutChart"></canvas>
-                <div class="donut-center">
-                    <span id="donutLabel">0/0</span>
-                    <small>done</small>
-                </div>
-            </div>
-            <div class="donut-legend">
-                <div class="legend-item">
-                    <div class="legend-dot" style="background:#CCFF00;"></div>
-                    <span class="legend-label">Completed</span>
-                    <span class="legend-val" id="legendDone">0</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-dot" style="background:#1e1e1e;"></div>
-                    <span class="legend-label">Remaining</span>
-                    <span class="legend-val" id="legendLeft">0</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Macros breakdown -->
-        <div class="macros-card">
-            <h4>Daily macros</h4>
-            <div class="macro-row">
-                <div class="macro-label-row">
-                    <span class="mlabel">Protein</span>
-                    <span class="mval" id="macroProtein">— g</span>
-                </div>
-                <div class="macro-bar-bg">
-                    <div class="macro-bar" id="barProtein" style="width:0%; background:#CCFF00;"></div>
-                </div>
-            </div>
-            <div class="macro-row">
-                <div class="macro-label-row">
-                    <span class="mlabel">Carbs</span>
-                    <span class="mval" id="macroCarbs">— g</span>
-                </div>
-                <div class="macro-bar-bg">
-                    <div class="macro-bar" id="barCarbs" style="width:0%; background:#66cc88;"></div>
-                </div>
-            </div>
-            <div class="macro-row">
-                <div class="macro-label-row">
-                    <span class="mlabel">Fats</span>
-                    <span class="mval" id="macroFats">— g</span>
-                </div>
-                <div class="macro-bar-bg">
-                    <div class="macro-bar" id="barFats" style="width:0%; background:#4488cc;"></div>
-                </div>
-            </div>
-        </div>
-
-    </aside>
+<div class="profile-header">
+    <div class="avatar" id="avatarDisplay">?</div>
+    <div>
+        <h2 id="displayName">User</h2>
+        <p id="displayUsername">@username</p>
+    </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="stats-row">
+
+    <div class="stat-card">
+        <p>Daily Calories</p>
+        <h2 id="statCalories">—</h2>
+    </div>
+
+    <div class="stat-card">
+        <p>BMI</p>
+        <h2 id="statBMI">—</h2>
+    </div>
+
+    <div class="stat-card">
+        <p>Activity</p>
+        <h2 id="statActivity">—</h2>
+    </div>
+
+    <div class="stat-card">
+        <p>Goals</p>
+        <h2 id="statGoals">—</h2>
+    </div>
+
+</div>
+
+<div class="card">
+    <h3>Calorie Overview</h3>
+    <canvas id="calorieChart"></canvas>
+</div>
+
+</main>
+
+<!-- RIGHT PANEL -->
+<aside class="right-panel">
+
+<div class="card">
+    <h4>Information</h4>
+    <p>Age: <span id="infoAge">—</span></p>
+    <p>Height: <span id="infoHeight">—</span></p>
+    <p>Weight: <span id="infoWeight">—</span></p>
+</div>
+
+<div class="card donut-card">
+    <h4>Workouts</h4>
+
+    <div class="donut-wrapper">
+        <canvas id="donutChart"></canvas>
+        <div class="donut-center">
+              9/21
+         <div class="donut-label">Workouts</div>
+        </div>
+    </div>
+
+</div>
+
+</aside>
+
+</div>
+
 <script>
-// ── SAFE DATA LOAD ──
-if (!localStorage.getItem("user")) {
-    window.location.href = "index.html";
-}
+
+// DATA LOAD
 const user = JSON.parse(localStorage.getItem('user') || '{}');
 const metrics = user.metrics || {};
 const health = user.health || {};
 
-console.log("USER:", user);
-console.log("METRICS:", metrics);
-console.log("HEALTH:", health);
+// POPULATE
+document.getElementById('displayName').textContent =
+    user.firstName || "User";
 
-// ── LABELS ──
-const GOAL_LABELS = {
-    fat_loss: 'Lose weight',
-    maintain: 'Maintain weight',
-    weight_gain: 'Gain weight',
-    muscle_gain: 'Gain muscle',
-    diet: 'Modify my diet',
-    stress: 'Manage stress',
-    steps: 'Increase step count',
-    endurance: 'Build endurance'
-};
+document.getElementById('displayUsername').textContent =
+    '@' + (user.username || 'user');
 
-const ACTIVITY_LABELS = {
-    sedentary: 'Sedentary',
-    light: 'Light',
-    moderate: 'Moderate',
-    very: 'Very Active',
-    extra: 'Extra Active'
-};
+document.getElementById('avatarDisplay').textContent =
+    (user.firstName?.[0] || '?');
 
-// ── BMI LABEL ──
-function bmiLabel(bmi) {
-    if (bmi < 18.5) return 'Underweight';
-    if (bmi < 25) return 'Normal';
-    if (bmi < 30) return 'Overweight';
-    return 'Obese';
-}
+document.getElementById('statGoals').textContent =
+    user.goals?.length || '—';
 
-// ── POPULATE UI ──
-function populate() {
+document.getElementById('statActivity').textContent =
+    metrics.activity || '—';
 
-    // NAME
-    const fullName = [user.firstName, user.lastName].filter(Boolean).join(' ') || 'User';
-    const initials = (user.firstName?.[0] || '') + (user.lastName?.[0] || '');
+ document.getElementById('statCalories').textContent =
+health.recommendedCalories ? Math.round(health.recommendedCalories) : "—";
 
-    const nameEl = document.getElementById('displayName');
-    if (nameEl) nameEl.textContent = fullName;
-    document.getElementById('displayUsername').textContent =
-        '@' + (user.username || 'user');
+document.getElementById('statBMI').textContent =
+    health.bmi || "—";
 
-    document.getElementById('avatarDisplay').textContent = initials || '?';
+document.getElementById('infoAge').textContent =
+    metrics.age || '—';
 
-    // GOALS
-    const goals = user.goals || [];
-    const tagsEl = document.getElementById('goalTags');
-    const listEl = document.getElementById('goalsList');
+document.getElementById('infoHeight').textContent =
+    metrics.heightFt || '—';
 
-    if (goals.length) {
-        tagsEl.innerHTML = goals.map(g =>
-            `<span class="tag">${GOAL_LABELS[g] || g}</span>`).join('');
+document.getElementById('infoWeight').textContent =
+    metrics.weight || '—';
 
-        listEl.innerHTML = goals.map(g => `
-            <div class="goal-item">
-                <div class="goal-dot"></div>
-                <div class="goal-text">${GOAL_LABELS[g] || g}</div>
-                <span class="goal-badge">Active</span>
-            </div>`).join('');
-    }
-
-    document.getElementById('statGoals').textContent = goals.length || '—';
-
-    // ACTIVITY
-    document.getElementById('statActivity').textContent =
-        ACTIVITY_LABELS[metrics.activity] || '—';
-
-    // INFO PANEL
-    document.getElementById('infoAge').textContent =
-        metrics.age ? metrics.age + ' yrs' : '—';
-
-    document.getElementById('infoHeight').textContent =
-        metrics.heightFt ? metrics.heightFt + ' ft' : '—';
-
-    document.getElementById('infoWeight').textContent =
-        metrics.weight ? metrics.weight + ' kg' : '—';
-
-    // BMI
-    if (health.bmi) {
-        document.getElementById('statBMI').textContent = health.bmi;
-        document.getElementById('statBMILabel').textContent = bmiLabel(health.bmi);
-    }
-
-    // CALORIES + MACROS
-    const calories = health.recommendedCalories;
-
-    if (calories) {
-        document.getElementById('statCalories').textContent = Math.round(calories);
-
-        const p = Math.round(calories * 0.3 / 4);
-        const c = Math.round(calories * 0.4 / 4);
-        const f = Math.round(calories * 0.3 / 9);
-
-        const max = Math.max(p, c, f);
-
-        document.getElementById('macroProtein').textContent = p + 'g';
-        document.getElementById('macroCarbs').textContent = c + 'g';
-        document.getElementById('macroFats').textContent = f + 'g';
-
-        document.getElementById('barProtein').style.width = (p/max*100) + '%';
-        document.getElementById('barCarbs').style.width = (c/max*100) + '%';
-        document.getElementById('barFats').style.width = (f/max*100) + '%';
-    }
-}
-
-// ── CHART ──
-let calorieChart;
-
-function buildCalorieChart() {
-    const canvas = document.getElementById('calorieChart');
-      if (!canvas || typeof Chart === "undefined") return;
-
-    const ctx = canvas.getContext('2d');
-
-    if (calorieChart) calorieChart.destroy();
-
-    calorieChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
-            datasets: [{
-                data: [1800,2100,2000,2300,2100,1900,2200],
-                borderColor: '#CCFF00',
-                backgroundColor: 'rgba(204,255,0,0.1)',
-                fill: true,
-                tension: 0.4
-            }]
+// CHARTS
+new Chart(document.getElementById('calorieChart'), {
+    type: 'line',
+    data: {
+        labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+        datasets: [{
+            label: "Calories",
+            data: [1800,2100,2000,2300,2100,1900,2200],
+            borderColor: '#CCFF00',
+            backgroundColor: 'rgba(204,255,0,0.1)',
+            fill: true,
+            tension: 0.4
+        }]
+    },
+   options: {
+    responsive: true,
+    plugins: {
+        legend: { display: false }
+    },
+    scales: {
+        x: {
+            ticks: { color: "#888" },
+            grid: { display: false }
         },
-        options: {
-            responsive: true,
-            plugins: { legend: { display: false } }
+        y: {
+            ticks: { color: "#666" },
+            grid: { color: "#1a1a1a" }
         }
-    });
+    }
 }
+});
 
-// ── DONUT ──
-function buildDonutChart() {
-    const canvas = document.getElementById('donutChart');
-    if (!canvas) return;
+// DOUGHNUT 
 
-    const ctx = canvas.getContext('2d');
+new Chart(document.getElementById('donutChart'), {
+    type: 'doughnut',
+    data: {
+        datasets: [{
+            data: [9, 12],
+            backgroundColor: ['#CCFF00', '#1e1e1e'],
+            borderWidth: 2
+        }]
+    },
+         options: {
+    cutout: '70%',
+    animation: {
+        animateRotate: true,
+        duration: 1200
+    },
+    plugins: {
+        legend: { display: false }
+    }
+    }
+});
 
-    new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            datasets: [{
-                data: [9, 12],
-                backgroundColor: ['#CCFF00', '#1e1e1e']
-            }]
-        },
-        options: {
-            cutout: '70%',
-            plugins: { legend: { display: false } }
-        }
-    });
-}
-
-// ── LOGOUT ──
+// LOGOUT
 function handleLogout() {
     localStorage.removeItem('user');
     window.location.href = 'index.html';
 }
 
-// ── INIT ──
-document.addEventListener('DOMContentLoaded', () => {
-    populate();
-    buildCalorieChart();
-    buildDonutChart();
-});
 </script>
+
 </body>
 </html>
