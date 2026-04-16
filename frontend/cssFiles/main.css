@@ -1245,3 +1245,61 @@ footer {
         text-align: center;
     }
 }
+
+
+/* ===============
+Step 2 Height/ Weight toggles
+================*/
+
+/* ── UNIT TOGGLE (Height / Weight in Step 2) ── */
+
+.unit-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.unit-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.unit-field-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.unit-toggle {
+  display: flex;
+  background: #0d0d0d;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.unit-btn {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 4px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.unit-btn.active {
+  background: #CCFF00;
+  color: #000;
+}
+
+.unit-btn:hover:not(.active) {
+  color: #fff;
+}
